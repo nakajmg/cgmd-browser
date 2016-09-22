@@ -1,18 +1,9 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import * as types from '../mutation-types'
 import _ from 'lodash'
-import * as actions from './actions'
-import * as getters from './getters'
-import * as types from './mutation-types'
-
-Vue.use(Vuex)
 
 const state = {
-  currentFilePath: '',
-  filePaths: [
-    '/usr/local/work/pxg/codegrid-draft/drafts/2016-react_ex/1.md',
-    '/usr/local/work/pxg/codegrid-draft/drafts/2016-react_ex/2.md'
-  ]
+  currentFilePath: null,
+  filePaths: ['hoge']
 }
 
 const mutations = {
@@ -31,10 +22,7 @@ const mutations = {
   }
 }
 
-export default new Vuex.Store({
+export default {
   state,
-  mutations,
-  actions,
-  getters,
-  strict: true
-})
+  mutations
+}

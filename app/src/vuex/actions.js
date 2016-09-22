@@ -1,9 +1,13 @@
 import * as types from './mutation-types'
 
-export const decrementMain = ({ commit }) => {
-  commit(types.DECREMENT_MAIN_COUNTER)
+export const addFilePaths = ({commit}, filepath) => {
+  commit(types.ADD_FILE_PATHS, filepath)
 }
 
-export const incrementMain = ({ commit }) => {
-  commit(types.INCREMENT_MAIN_COUNTER)
+export const removeFilePaths = ({commit}, filepath) => {
+  commit(types.REMOVE_FILE_PATHS, filepath)
+}
+
+export const setCurrentFilePath = ({commit}, filepath) => {
+  commit(types.SET_CURRENT_FILE_PATH, filepath)
 }
