@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+  <meta charset="UTF-8">
+  <title>preview</title>
+  <link rel="stylesheet" href="http://ui.codegrid.net/assets2/css/codegrid-ui.min.css">
+</head>
+<body>
+  <div class="CG2-narrowLayout">
+    <div class="CG2-narrowLayout__main">
+      <article class="CG2-article" id="article">
+      </article>
+    </div>
+  </div>
+  <script src="http://ui.codegrid.net/assets2/js/codegrid-ui.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+  <script>
+    const $article = document.querySelector('#article')
+
+    function update(md) {
+      $article.innerHTML = unescape(md)
+      Prism.highlightAll(false, () => {
+        console.log(`offsetHeight[${document.body.offsetHeight}]`)
+      })
+    }
+
+    $(window).on('resize', () => {
+      console.log(`offsetHeight[${document.body.offsetHeight}]`)
+    })
+  </script>
+</body>
+</html>

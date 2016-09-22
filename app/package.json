@@ -1,0 +1,13 @@
+{
+  "name": "cgmd-prevue",
+  "version": "0.0.0",
+  "description": "realtime markdown preview for cgmd-preview",
+  "main": "electron.js",
+  "dependencies": {
+    "vue": "next",
+    "vue-electron": "^1.0.0",
+    "vuex": "next"
+  },
+  "devDependencies": {},
+  "author": "nakajmg <nakajima.jmg@gmail.com>"
+}
