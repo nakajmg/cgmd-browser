@@ -9,35 +9,26 @@
   html,
   body { height: 100%; }
 
-  body {
-    align-items: center;
-    background:
-      radial-gradient(
-        ellipse at center,
-        rgba(255, 255, 255, 1) 0%,
-        rgba(229, 229, 229, .85) 100%
-      );
-    background-position: center;
+  .app {
+    height: 100vh;
+    width: 100%;
     display: flex;
-    font-family: Lato, Helvetica, sans-serif;
-    justify-content: center;
-    text-align: center;
+    flex-direction: column;
   }
 </style>
 
 <template>
-  <div>
-    <landing-page></landing-page>
+  <div class="app">
+    <preview-view></preview-view>
   </div>
 </template>
 
-<script>
-  import LandingPage from './components/LandingPageView'
-  import store from 'src/vuex/store'
-
+<script lang="babel">
+  import store from './vuex/store'
+  import PreviewView from 'components/PreviewView.vue'
   export default {
     components: {
-      LandingPage
+      PreviewView
     },
     store
   }

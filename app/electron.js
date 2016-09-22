@@ -1,9 +1,11 @@
 'use strict'
 
-const electron = require('electron')
 const path = require('path')
-const app = electron.app
-const BrowserWindow = electron.BrowserWindow
+const {app, BrowserWindow, ipcMain, Menu, dialog} = require('electron')
+const fs = require('fs')
+const _ = require('lodash')
+const CodegirdMarkdown = require('codegrid-markdown')
+const cgmd = new CodegirdMarkdown()
 
 let mainWindow
 let config = {}
@@ -39,6 +41,13 @@ function createWindow () {
 
   mainWindow.on('closed', () => {
     mainWindow = null
+  })
+
+  ipcMain.on('openMarkdown', (e, filepath) => {
+    const file = fs.readFileSync(filepath, 'utf8')
+    const dirname = path.dirname(filepath)
+    const md = cgmd.render(file)
+    mainWindow.webContents.send(filepath, {md})
   })
 
   console.log('mainWindow opened')
