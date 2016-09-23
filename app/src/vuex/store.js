@@ -10,9 +10,11 @@ Vue.use(Vuex)
 const state = {
   currentFilePath: '',
   filePaths: [
-//    '/usr/local/work/pxg/codegrid-draft/drafts/2016-react_ex/1.md',
-//    '/usr/local/work/pxg/codegrid-draft/drafts/2016-react_ex/2.md'
-  ]
+    '/usr/local/work/pxg/codegrid-draft/drafts/2016-react_ex/1.md',
+    '/usr/local/work/pxg/codegrid-draft/drafts/2016-react_ex/2.md',
+    '/usr/local/work/pxg/codegrid-draft/drafts/2016-electron/4.md'
+  ],
+  previewHeight: 0
 }
 
 const mutations = {
@@ -24,10 +26,26 @@ const mutations = {
   [types.REMOVE_FILE_PATHS](state, filepath) {
     const index = _.indexOf(state.filePaths, filepath)
     state.filePaths.splice(index, 1)
+    let next = ''
+    // 消したindexにpathがあればそれ
+    if (state.filePaths[index]) {
+      next = state.filePaths[index]
+    }
+    // ないときは最後の消したときかfilePathsが空のどっちか
+    else if (state.filePaths.length !== 0) {
+      next = state.filePaths[index - 1]
+    }
+    setTimeout(() => {
+      state.currentFilePath = next
+    }, 0)
   },
 
   [types.SET_CURRENT_FILE_PATH](state, filepath) {
     state.currentFilePath = filepath
+  },
+
+  [types.SET_PREVIEW_HEIGHT](state, height) {
+    state.previewHeight = height
   }
 }
 
@@ -35,6 +53,5 @@ export default new Vuex.Store({
   state,
   mutations,
   actions,
-  getters,
-  strict: true
+  getters
 })

@@ -13,4 +13,7 @@ export const setCurrentFilePath = ({commit}, filepath) => {
   commit(types.SET_CURRENT_FILE_PATH, filepath)
 }
 
-// backwardCurrentFilePath タブ削除したときに別のpathをcurrentにする
+export const setPreviewHeight = ({commit}, height) => {
+  commit(types.SET_PREVIEW_HEIGHT, height)
+}
+
