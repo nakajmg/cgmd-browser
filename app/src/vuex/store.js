@@ -17,7 +17,7 @@ const state = {
 
 const mutations = {
   [types.ADD_FILE_PATHS](state, filepath) {
-    if (_.contains(state.filePaths, filepath)) return
+    if (_.includes(state.filePaths, filepath)) return
     state.filePaths.push(filepath)
   },
 

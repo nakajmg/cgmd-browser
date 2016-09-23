@@ -2,6 +2,7 @@ import * as types from './mutation-types'
 
 export const addFilePaths = ({commit}, filepath) => {
   commit(types.ADD_FILE_PATHS, filepath)
+  commit(types.SET_CURRENT_FILE_PATH, filepath)
 }
 
 export const removeFilePaths = ({commit}, filepath) => {
@@ -11,3 +12,5 @@ export const removeFilePaths = ({commit}, filepath) => {
 export const setCurrentFilePath = ({commit}, filepath) => {
   commit(types.SET_CURRENT_FILE_PATH, filepath)
 }
+
+// backwardCurrentFilePath タブ削除したときに別のpathをcurrentにする
