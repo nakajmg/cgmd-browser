@@ -21,10 +21,11 @@
   <div class="app">
     <header class="toolbar">
       <h1 class="title">cgmd-prevue</h1>
-      <toolbar-view></toolbar-view>
+      <!--<toolbar-view></toolbar-view>-->
     </header>
     <tabs-view></tabs-view>
     <preview-view></preview-view>
+    <footer-view></footer-view>
   </div>
 </template>
 
@@ -33,11 +34,13 @@
   import ToolbarView from 'components/ToolbarView.vue'
   import TabsView from 'components/TabsView.vue'
   import PreviewView from 'components/PreviewView.vue'
+  import FooterView from 'components/FooterView.vue'
   export default {
     components: {
       PreviewView,
       TabsView,
-      ToolbarView
+      ToolbarView,
+      FooterView
     },
     store
   }

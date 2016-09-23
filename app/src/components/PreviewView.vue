@@ -7,6 +7,7 @@
 <script lang="babel">
   import {ipcRenderer} from 'electron'
   import {currentFilePath} from '../vuex/getters'
+  import {mapActions} from 'vuex'
   export default{
     data() {
       return {
@@ -15,17 +16,20 @@
     },
     mounted() {
       this.$refs.preview.addEventListener('did-finish-load', () => {
-        this.$store.watch(currentFilePath, (current) => {
-          if (!current) return
-          ipcRenderer.once(current, (e, {md}) => {
-            this.updatePreview(md)
-          })
-          ipcRenderer.send('openMarkdown', current)
-        })
+        this.$store.watch(currentFilePath, this.renderPreview)
+        this.$refs.preview.addEventListener('console-message', this.onConsoleMessage)
       })
-      this.$refs.preview.addEventListener('console-message', this.onConsoleMessage)
     },
     methods: {
+      renderPreview(current) {
+        if (!current) {
+          return this.updatePreview('')
+        }
+        ipcRenderer.once(current, (e, {md}) => {
+          this.updatePreview(md)
+        })
+        ipcRenderer.send('openMarkdown', current)
+      },
       updatePreview(md) {
         this.$refs.preview.executeJavaScript(`
           update('${escape(md)}')
@@ -37,8 +41,11 @@
           this.updateHeight(height)
         }
       },
+      ...mapActions({
+        setPreviewHeight: 'setPreviewHeight'
+      }),
       updateHeight(height) {
-//        console.log(height)
+        this.setPreviewHeight(height)
       }
     }
   }

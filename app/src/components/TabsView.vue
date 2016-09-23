@@ -8,23 +8,34 @@
   }
   .tabs {
     display: flex;
-    padding: 5px 0px 0px 30px;
+    padding: 5px 30px 0px 30px;
   }
   .tab {
     /*flex-grow: 1;*/
     text-align: center;
-    opacity: 0.3;
-    padding: 5px 10px 0;
+    opacity: 0.5;
+    padding: 5px 0px 5px 10px;
     border: 1px solid transparent;
     border-bottom: none;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
+    border-color: #989898;
+    background-color: #f3f3f3;
+    position: relative;
+    display: flex;
+  }
+  .tab .icon {
+    /*position: absolute;*/
+    /*right: 10px;*/
+    width: 30px;
+  }
+  .tab .icon:hover:before{
+    content: '\E814';
+    color: red;
   }
   .active {
     opacity: 1;
     background: #fff;
-    border-color: #989898;
-    position: relative;
   }
   .active:after {
     position: absolute;
@@ -45,7 +56,10 @@
         :class="{'active': path === current}"
         v-for="path in items"
         @click="select(path)">
-        {{abbrPath(path)}}
+        <span>
+          {{abbrPath(path)}}
+        </span>
+        <span class="icon icon-cancel" @click="close(path)"></span>
       </div>
     </div>
   </div>
@@ -72,12 +86,16 @@
         this.setCurrentFilePath(path)
       },
       ...mapActions({
-        setCurrentFilePath: 'setCurrentFilePath'
+        setCurrentFilePath: 'setCurrentFilePath',
+        removeFilePaths: 'removeFilePaths'
       }),
       abbrPath(fullPath) {
         const arr = fullPath.split(PATH.sep)
         const path = `${arr[arr.length - 2]}${PATH.sep}${arr[arr.length - 1]}`
         return path
+      },
+      close(path) {
+        this.removeFilePaths(path)
       }
     }
   }

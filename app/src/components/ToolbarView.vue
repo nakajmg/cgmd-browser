@@ -1,20 +1,18 @@
 <template>
-  <div class="header-toolbar">
-    <div class="btn-group">
-      <button class="btn btn-default"
-        @click="openFile"
-        title="ファイルを開く">
-        <span class="icon icon-folder"></span>
-      </button>
-      <button class="btn btn-default" title="エディタで開く">
-        <span class="icon icon-export"></span>
-      </button>
+  <div class="btn-group">
+    <button class="btn btn-default"
+      @click="openFile"
+      title="ファイルを開く">
+      <span class="icon icon-folder"></span>
+    </button>
+    <button class="btn btn-default" title="エディタで開く">
+      <span class="icon icon-export"></span>
+    </button>
 
-      <button class="btn btn-default pull-right" title="検索">
-        <span class="icon icon-search"></span>
-      </button>
-    </div>
-    <button class="btn btn-default pull-right"
+    <button class="btn btn-default pull-right" title="検索">
+      <span class="icon icon-search"></span>
+    </button>
+    <button class="btn btn-default"
       title="ヘルプを見る">
       <span class="icon icon-help-circled"></span>
     </button>
@@ -30,9 +28,7 @@
     },
     methods: {
       ...mapActions({
-        addFilePaths: 'addFilePaths',
-        setCurrentFilePath: 'setCurrentFilePath'
-
+        addFilePaths: 'addFilePaths'
       }),
       openFile() {
         const filePaths = remote.dialog.showOpenDialog({
@@ -41,7 +37,6 @@
             {name: 'markdown', extensions: ['md']}
           ]
         })
-
         if (filePaths) {
           this.addFilePaths(filePaths[0])
         }
