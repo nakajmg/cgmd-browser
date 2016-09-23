@@ -47,7 +47,12 @@ function createWindow () {
   ipcMain.on('openMarkdown', (e, filepath) => {
     const file = fs.readFileSync(filepath, 'utf8')
     const dirname = path.dirname(filepath)
-    const md = cgmd.render(file)
+    const replacedFile = file.replace(/\(\.\/(.*)\)/g, (rep, $1) => {
+      let local = `${dirname}/${$1}`;
+      let img = fs.readFileSync(local)
+      return `(data:image/png;base64,${new Buffer(img).toString('base64')})`
+    })
+    const md = cgmd.render(replacedFile)
     mainWindow.webContents.send(filepath, {md})
   })
 
