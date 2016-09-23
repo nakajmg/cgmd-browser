@@ -19,16 +19,25 @@
 
 <template>
   <div class="app">
+    <header class="toolbar toolbar-header">
+      <h1 class="title">cgmd-prevue</h1>
+      <toolbar-view></toolbar-view>
+      <tabs-view></tabs-view>
+    </header>
     <preview-view></preview-view>
   </div>
 </template>
 
 <script lang="babel">
   import store from './vuex/store'
+  import ToolbarView from 'components/ToolbarView.vue'
+  import TabsView from 'components/TabsView.vue'
   import PreviewView from 'components/PreviewView.vue'
   export default {
     components: {
-      PreviewView
+      PreviewView,
+      TabsView,
+      ToolbarView
     },
     store
   }

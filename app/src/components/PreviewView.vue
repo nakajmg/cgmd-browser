@@ -1,47 +1,55 @@
 <template>
-  <div class="preview-view">
-    <div>
-      <button v-for="item in items" @click="select(item)">
-        {{item}}
-      </button>
-    </div>
-    <preview-item></preview-item>
+  <div class="preview-item">
+    <webview autosize="on" src="/static/webview.html" ref="preview" class="webview"></webview>
   </div>
 </template>
 
 <script lang="babel">
-  import PreviewItem from './PreviewView/PreviewItem.vue'
-  import {mapGetters, mapActions} from 'vuex'
-  export default {
+  import {ipcRenderer} from 'electron'
+  import {currentFilePath} from '../vuex/getters'
+  export default{
     data() {
       return {
+        regexpHeight: /offsetHeight\[([0-9]*)\]/
       }
     },
-    computed: {
-      ...mapGetters({
-        items: 'filePaths',
-        current: 'currentFilePath'
+    mounted() {
+      this.$refs.preview.addEventListener('did-finish-load', () => {
+        this.$store.watch(currentFilePath, (current) => {
+          if (!current) return
+          ipcRenderer.once(current, (e, {md}) => {
+            this.updatePreview(md)
+          })
+          ipcRenderer.send('openMarkdown', current)
+        })
       })
-    },
-    components: {
-      PreviewItem
+      this.$refs.preview.addEventListener('console-message', this.onConsoleMessage)
     },
     methods: {
-      select(path) {
-        console.log(path)
-        this.setCurrentFilePath(path)
+      updatePreview(md) {
+        this.$refs.preview.executeJavaScript(`
+          update('${escape(md)}')
+        `)
       },
-      ...mapActions({
-        setCurrentFilePath: 'setCurrentFilePath'
-      })
+      onConsoleMessage({message}) {
+        if (message && this.regexpHeight.test(message)) {
+          let height = message.replace(this.regexpHeight, '$1')
+          this.updateHeight(height)
+        }
+      },
+      updateHeight(height) {
+//        console.log(height)
+      }
     }
   }
 </script>
 
 <style>
-  .preview-view {
+  .preview-item {
     flex-grow: 1;
     display: flex;
-    flex-direction: column;
+  }
+  .webview {
+    flex-grow: 1;
   }
 </style>

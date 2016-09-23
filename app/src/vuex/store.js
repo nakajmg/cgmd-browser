@@ -10,8 +10,8 @@ Vue.use(Vuex)
 const state = {
   currentFilePath: '',
   filePaths: [
-    '/usr/local/work/pxg/codegrid-draft/drafts/2016-react_ex/1.md',
-    '/usr/local/work/pxg/codegrid-draft/drafts/2016-react_ex/2.md'
+//    '/usr/local/work/pxg/codegrid-draft/drafts/2016-react_ex/1.md',
+//    '/usr/local/work/pxg/codegrid-draft/drafts/2016-react_ex/2.md'
   ]
 }
 
