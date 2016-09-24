@@ -17,7 +17,9 @@
   export default{
     data() {
       return {
-        regexpHeight: /offsetHeight\[([0-9]*)\]/
+        regexpHeight: /offsetHeight\[([0-9]*)\]/,
+        regexpScroll: /scroll\[([0-9]*)\]/,
+        scroll: {}
       }
     },
     computed: {
@@ -74,8 +76,12 @@
         ipcRenderer.send('openMarkdown', current)
       },
       updatePreview(md) {
+        let scroll = 0
+        if (this.scroll[this.currentFilePath] !== undefined) {
+          scroll = this.scroll[this.currentFilePath]
+        }
         this.$refs.preview.executeJavaScript(`
-          update('${escape(md)}')
+          update('${escape(md)}',${scroll})
         `)
       },
       onConsoleMessage({message}) {
@@ -83,9 +89,16 @@
           let height = message.replace(this.regexpHeight, '$1')
           this.updateHeight(height)
         }
+        if (message && this.regexpScroll.test(message)) {
+          let scroll = message.replace(this.regexpScroll, '$1')
+          this.setScroll(scroll)
+        }
       },
       updateHeight(height) {
         this.setPreviewHeight(height)
+      },
+      setScroll(scroll) {
+        this.scroll[this.currentFilePath] = scroll
       },
       openOnBrowser({url}) {
         require('electron').shell.openExternal(url)
