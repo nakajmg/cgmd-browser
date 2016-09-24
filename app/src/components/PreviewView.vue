@@ -22,7 +22,8 @@
     },
     computed: {
       ...mapGetters({
-        searchState: 'searchState'
+        searchState: 'searchState',
+        currentFilePath: 'currentFilePath'
       })
     },
     mounted() {
@@ -46,6 +47,9 @@
           this.closeSearchBox()
         })
         this.$store.watch(searchState, this.focusSearch)
+        if (this.currentFilePath) {
+          this.renderPreview(this.currentFilePath)
+        }
       })
     },
     methods: {

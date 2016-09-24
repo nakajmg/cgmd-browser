@@ -34,6 +34,21 @@
   import TabsView from 'components/TabsView.vue'
   import PreviewView from 'components/PreviewView.vue'
   import FooterView from 'components/FooterView.vue'
+  import * as types from './vuex/mutation-types'
+  import _ from 'lodash'
+  const mutations = [
+    types.SET_CURRENT_FILE_PATH,
+    types.REMOVE_FILE_PATHS,
+    types.ADD_FILE_PATHS,
+    types.ADD_FAVORITE,
+    types.REMOVE_FAVORITE
+  ]
+  store.subscribe((mutation, state) => {
+    if (_.includes(mutations, mutation.type)) {
+      window.localStorage.setItem('prevue-state', JSON.stringify(state))
+    }
+  })
+
   export default {
     components: {
       PreviewView,

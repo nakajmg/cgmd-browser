@@ -7,18 +7,13 @@ import * as types from './mutation-types'
 
 Vue.use(Vuex)
 
-const state = {
+const pastState = window.localStorage.getItem('prevue-state')
+const state = pastState ? {...JSON.parse(pastState), wordCount: '-', previewHeight: '-', searchState: false} : {
   currentFilePath: '',
-  wordCount: 0,
-  filePaths: [
-    '/usr/local/work/pxg/codegrid-draft/drafts/2016-react_ex/1.md',
-    '/usr/local/work/pxg/codegrid-draft/drafts/2016-react_ex/2.md',
-    '/usr/local/work/pxg/codegrid-draft/drafts/2016-electron/4.md'
-  ],
-  previewHeight: 0,
-  favorite: [
-    '/usr/local/work/pxg/codegrid-draft/drafts/2016-react_ex/2.md'
-  ],
+  wordCount: '-',
+  filePaths: [],
+  previewHeight: '-',
+  favorite: [],
   searchState: false
 }
 
