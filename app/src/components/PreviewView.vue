@@ -80,6 +80,7 @@
         if (this.scroll[this.currentFilePath] !== undefined) {
           scroll = this.scroll[this.currentFilePath]
         }
+        console.log(scroll)
         this.$refs.preview.executeJavaScript(`
           update('${escape(md)}',${scroll})
         `)

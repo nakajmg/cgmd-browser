@@ -30,22 +30,19 @@
       $article.innerHTML = unescape(md)
       Prism.highlightAll(false, () => {
         console.log(`offsetHeight[${document.body.offsetHeight}]`)
-        if (scroll) {
-          $(window).scrollTop(scroll)
-        }
+        $(window).scrollTop(scroll)
       })
     }
-    $(function() {
-      $(window).on('resize', $.debounce(300, () => {
-          console.log(`offsetHeight[${document.body.offsetHeight}]`)
-        })
-      )
 
-      $(window).on('scroll', $.debounce(300, () => {
-          console.log(`scroll[${$(window).scrollTop()}]`)
-        })
-      )
+    const onScroll = $.debounce(300, () => {
+      console.log(`scroll[${$(window).scrollTop()}]`)
     })
+    const onResize = $.debounce(300, () => {
+      console.log(`offsetHeight[${document.body.offsetHeight}]`)
+    })
+
+    $(window).on('resize', onResize)
+    $(window).on('scroll', onScroll)
   </script>
 </body>
 </html>
