@@ -7,7 +7,8 @@ const _ = require('lodash')
 const CodegirdMarkdown = require('codegrid-markdown')
 const cgmd = new CodegirdMarkdown()
 const wordCounter = require('./src/wordCounter')
-
+const watcher = {}
+const chokidar = require('chokidar')
 let mainWindow
 let config = {}
 
@@ -45,7 +46,7 @@ function createWindow () {
     mainWindow = null
   })
 
-  ipcMain.on('openMarkdown', (e, filepath) => {
+  function openMarkdown(filepath) {
     const file = fs.readFileSync(filepath, 'utf8')
     const dirname = path.dirname(filepath)
     const replacedFile = file.replace(/\(\.\/(.*)\)/g, (rep, $1) => {
@@ -57,6 +58,26 @@ function createWindow () {
     const count = wordCounter(file)
     mainWindow.webContents.send(filepath, {md})
     mainWindow.webContents.send(`${filepath}:count`, {count})
+  }
+
+  ipcMain.on('openMarkdown', (e, filepath) => {
+    openMarkdown(filepath)
+
+    if (!watcher[filepath]) {
+      watcher[filepath] = chokidar.watch(filepath, {
+        ignored: /[\/\\]\./
+      })
+      .on('all', (e, filepath) => {
+        mainWindow.webContents.send('updateMarkdown', {filepath})
+      })
+    }
+  })
+
+  ipcMain.on('stopWatching', (e, filepath) => {
+    if (watcher[filepath]) {
+      watcher[filepath].close();
+      watcher[filepath] = null
+    }
   })
 
   console.log('mainWindow opened')

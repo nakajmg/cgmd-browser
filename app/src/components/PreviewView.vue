@@ -52,6 +52,7 @@
         if (this.currentFilePath) {
           this.renderPreview(this.currentFilePath)
         }
+        ipcRenderer.on('updateMarkdown', this.onUpdateMarkdown)
       })
     },
     methods: {
@@ -108,6 +109,11 @@
       },
       focusSearch(bool) {
         if (bool) this.$refs.search.focus()
+      },
+      onUpdateMarkdown(e, {filepath}) {
+        if (this.currentFilePath === filepath) {
+          this.renderPreview(filepath)
+        }
       }
     }
   }

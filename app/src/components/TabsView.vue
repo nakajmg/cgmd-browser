@@ -110,7 +110,7 @@
 <script lang="babel">
   import {mapGetters, mapActions} from 'vuex'
   import PATH from 'path'
-  import {remote} from 'electron'
+  import {remote, ipcRenderer} from 'electron'
   export default {
     data() {
       return {
@@ -128,8 +128,8 @@
     components: {
     },
     methods: {
-      select(path) {
-        this.setCurrentFilePath(path)
+      select(filepath) {
+        this.setCurrentFilePath(filepath)
       },
       ...mapActions({
         setCurrentFilePath: 'setCurrentFilePath',
@@ -141,8 +141,9 @@
         const path = `${arr[arr.length - 2]}${PATH.sep}${arr[arr.length - 1]}`
         return path
       },
-      close(path) {
-        this.removeFilePaths(path)
+      close(filepath) {
+        this.removeFilePaths(filepath)
+        ipcRenderer.send('stopWatching', filepath)
       },
       openFile() {
         const filePaths = remote.dialog.showOpenDialog({

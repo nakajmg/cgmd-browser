@@ -58,6 +58,7 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "chokidar": "^1.6.0",
     "codegrid-markdown": "^3.3.0",
     "electron-search-text": "^0.3.0",
     "lodash": "^4.16.1",
