@@ -15,7 +15,8 @@ const state = {
     '/usr/local/work/pxg/codegrid-draft/drafts/2016-react_ex/2.md',
     '/usr/local/work/pxg/codegrid-draft/drafts/2016-electron/4.md'
   ],
-  previewHeight: 0
+  previewHeight: 0,
+  favorite: []
 }
 
 const mutations = {
@@ -36,6 +37,7 @@ const mutations = {
     else if (state.filePaths.length !== 0) {
       next = state.filePaths[index - 1]
     }
+    // setTimeoutしないと２回watchが反応することがある
     setTimeout(() => {
       state.currentFilePath = next
     }, 0)
@@ -51,6 +53,15 @@ const mutations = {
 
   [types.SET_WORD_COUNT](state, count) {
     state.wordCount = count
+  },
+
+  [types.ADD_FAVORITE](state, filepath) {
+    state.favorite.push(filepath)
+  },
+
+  [types.REMOVE_FAVORITE](state, filepath) {
+    const index = _.indexOf(state.favorite, filepath)
+    state.favorite.splice(index, 1)
   }
 }
 

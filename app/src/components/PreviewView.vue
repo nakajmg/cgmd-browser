@@ -34,7 +34,6 @@
           this.updatePreview(md)
         })
         ipcRenderer.once(`${current}:count`, (e, {count}) => {
-          console.log(count)
           this.setWordCount(count)
         })
         ipcRenderer.send('openMarkdown', current)

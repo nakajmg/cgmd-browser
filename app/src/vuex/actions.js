@@ -21,3 +21,10 @@ export const setWordCount = ({commit}, count) => {
   commit(types.SET_WORD_COUNT, count)
 }
 
+export const addFavorite = ({commit}, filepath) => {
+  commit(types.ADD_FAVORITE, filepath)
+}
+
+export const removeFavorite = ({commit}, filepath) => {
+  commit(types.REMOVE_FAVORITE, filepath)
+}
