@@ -9,10 +9,11 @@
     display: flex;
     padding: 10px 30px 0px 10px;
     align-items: flex-end;
+    flex-wrap: wrap;
   }
   .tab {
     text-align: center;
-    padding: 5px 0px 5px 10px;
+    padding: 5px 10px 5px 10px;
     border: 1px solid transparent;
     border-bottom: none;
     border-top-left-radius: 1px;
@@ -31,13 +32,15 @@
     background-color: rgb(235,235,235);
   }
   .tab .close {
-    /*position: absolute;*/
-    /*right: 10px;*/
     width: 30px;
+    margin-right: -10px;
   }
   .tab .close:hover:before{
     content: '\E814';
     color: red;
+  }
+  .tab-text {
+    white-space: nowrap;
   }
   .active {
     color: #000;
@@ -74,6 +77,9 @@
   .empty {
     font-size: 12px;
   }
+  .down {
+    font-size: 13px;
+  }
 </style>
 
 <template>
@@ -84,16 +90,15 @@
         :class="{'active': path === current}"
         v-for="path in items"
         @click="select(path)">
-        <span>
+        <span class="tab-text">
           <span class="icon icon-doc-text"></span>{{abbrPath(path)}}
         </span>
         <span class="icon icon-cancel close" @click="close(path)"></span>
       </div>
       <div class="empty tab active" v-if="isEmpty">
         <span>
-          <span class="icon icon-doc-text"></span>ファイルを開いてね
+          <span class="icon icon-down down"></span>
         </span>
-        <span class="icon icon-cancel close"></span>
       </div>
       <div class="add" @click="openFile">
         <span class="icon icon-plus"></span>

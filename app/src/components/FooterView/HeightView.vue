@@ -11,7 +11,6 @@
     display: flex;
     align-items: center;
     margin-left: 0px;
-    margin-right: 5px;
   }
   .text {
     flex-grow: 1;

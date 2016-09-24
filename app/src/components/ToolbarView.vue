@@ -73,7 +73,14 @@
         class="btn btn-default">
         <span class="icon icon-star"></span>
       </button>
+    </div>
+    <filepath-view></filepath-view>
+    <wordcount-view></wordcount-view>
+    <height-view></height-view>
+
+    <div class="btn-group">
       <button class="btn btn-default"
+        @click="openOnEditor"
         :disabled="isNotCurrent"
         title="エディタで開く">
         <span class="icon icon-export"></span>
@@ -84,9 +91,7 @@
         <span class="icon icon-search"></span>
       </button>
     </div>
-    <filepath-view></filepath-view>
-    <wordcount-view></wordcount-view>
-    <height-view></height-view>
+
     <button class="btn btn-default"
       title="ヘルプを見る">
       <span class="icon icon-help-circled"></span>
@@ -118,6 +123,7 @@
   import WordcountView from './FooterView/WordcountView.vue'
   import {remote} from 'electron'
   import PATH from 'path'
+  import OPEN from 'open'
   import {mapActions, mapGetters} from 'vuex'
   export default{
     data() {
@@ -161,6 +167,9 @@
       },
       open(filepath) {
         this.addFilePaths(filepath)
+      },
+      openOnEditor() {
+        OPEN(this.currentFilePath)
       }
     },
     components: {

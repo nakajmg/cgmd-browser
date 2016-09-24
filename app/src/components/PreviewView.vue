@@ -26,8 +26,14 @@
       })
     },
     methods: {
+      ...mapActions({
+        setPreviewHeight: 'setPreviewHeight',
+        setWordCount: 'setWordCount'
+      }),
       renderPreview(current) {
         if (!current) {
+          this.updateHeight('-')
+          this.setWordCount('-')
           return this.updatePreview('')
         }
         ipcRenderer.once(current, (e, {md}) => {
@@ -49,10 +55,6 @@
           this.updateHeight(height)
         }
       },
-      ...mapActions({
-        setPreviewHeight: 'setPreviewHeight',
-        setWordCount: 'setWordCount'
-      }),
       updateHeight(height) {
         this.setPreviewHeight(height)
       },
