@@ -11,23 +11,24 @@
     align-items: flex-end;
   }
   .tab {
-    /*flex-grow: 1;*/
     text-align: center;
-    opacity: 0.5;
     padding: 5px 0px 5px 10px;
     border: 1px solid transparent;
     border-bottom: none;
     border-top-left-radius: 1px;
     border-top-right-radius: 1px;
     border-color: #989898;
-    background-color: #f3f3f3;
+    background-color: #e2e1e2;
+    color: #888;
     position: relative;
     display: flex;
     min-height: 31px;
-    transition: opacity 500ms ease;
+    transition: background-color 300ms ease;
+    transition: color 300ms ease;
   }
   .tab:not(.active):hover {
-    opacity: 0.9;
+    color: #444;
+    background-color: rgb(235,235,235);
   }
   .tab .close {
     /*position: absolute;*/
@@ -39,7 +40,7 @@
     color: red;
   }
   .active {
-    opacity: 1;
+    color: #000;
     background-color: rgb(246,246,246);
   }
   .active:after {
@@ -50,6 +51,7 @@
     border-bottom: 1px solid rgb(246,246,246);
     left: 0;
     bottom: -1px;
+    z-index: 1;
   }
   .tab .icon-doc-text {
     margin-right: 5px;
@@ -59,8 +61,8 @@
     background-color: #e2e1e2;
     text-align: center;
     font-size: 14px;
-    line-height: 16px;
-    width: 24px;
+    line-height: 18px;
+    width: 22px;
     border-right: 1px solid #9e9e9e;
     border-top: 1px solid #9e9e9e;
     border-top-right-radius: 2px;

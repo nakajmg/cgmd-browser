@@ -16,7 +16,9 @@ const state = {
     '/usr/local/work/pxg/codegrid-draft/drafts/2016-electron/4.md'
   ],
   previewHeight: 0,
-  favorite: []
+  favorite: [
+    '/usr/local/work/pxg/codegrid-draft/drafts/2016-react_ex/2.md'
+  ]
 }
 
 const mutations = {

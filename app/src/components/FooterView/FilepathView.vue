@@ -11,6 +11,9 @@
     flex-grow: 1;
     margin: 0 5px;
   }
+  .filepath-text {
+    -webkit-user-select: initial;
+  }
   .icon {
     opacity: 0.4;
     margin-right: 3px;
@@ -25,7 +28,7 @@
 <template>
   <div class="filepath">
     <span class="icon icon-eye"></span>
-      <span v-if="currentFilePath">
+      <span class="filepath-text" v-if="currentFilePath">
         {{currentFilePath}}
       </span>
       <span v-else class="placeholder">
