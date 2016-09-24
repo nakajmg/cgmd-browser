@@ -62,13 +62,46 @@ const mutations = {
     state.favorite.splice(index, 1)
   },
 
+  [types.TOGGLE_FAVORITE](state, filepath) {
+    const index = _.indexOf(state.favorite, filepath)
+    if (index !== -1) {
+      state.favorite.splice(index, 1)
+    }
+    else {
+      state.favorite.push(filepath)
+    }
+  },
+
   [types.TOGGLE_SEARCH_STATE](state) {
     state.searchState = !state.searchState
   },
 
   [types.SET_SEARCH_STATE](state, bool) {
     state.searchState = bool
+  },
+
+  [types.TABS_MOVE_RIGHT](state) {
+    if (state.filePaths.length === 0) return
+    const index = _.indexOf(state.filePaths, state.currentFilePath)
+    if (index === state.filePaths.length - 1) {
+      state.currentFilePath = state.filePaths[0]
+    }
+    else {
+      state.currentFilePath = state.filePaths[index + 1]
+    }
+  },
+
+  [types.TABS_MOVE_LEFT](state) {
+    if (state.filePaths.length === 0) return
+    const index = _.indexOf(state.filePaths, state.currentFilePath)
+    if (index === 0) {
+      state.currentFilePath = state.filePaths[state.filePaths.length - 1]
+    }
+    else {
+      state.currentFilePath = state.filePaths[index - 1]
+    }
   }
+
 }
 
 export default new Vuex.Store({

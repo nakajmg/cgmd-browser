@@ -24,6 +24,7 @@
       <toolbar-view></toolbar-view>
     </header>
     <preview-view></preview-view>
+    <event-receiver></event-receiver>
     <!--<footer-view></footer-view>-->
   </div>
 </template>
@@ -34,6 +35,7 @@
   import TabsView from 'components/TabsView.vue'
   import PreviewView from 'components/PreviewView.vue'
   import FooterView from 'components/FooterView.vue'
+  import EventReceiver from 'components/EventReceiver.vue'
   import * as types from './vuex/mutation-types'
   import _ from 'lodash'
   const mutations = [
@@ -44,6 +46,7 @@
     types.REMOVE_FAVORITE
   ]
   store.subscribe((mutation, state) => {
+    console.log(mutation.type)
     if (_.includes(mutations, mutation.type)) {
       window.localStorage.setItem('prevue-state', JSON.stringify(state))
     }
@@ -54,7 +57,8 @@
       PreviewView,
       TabsView,
       ToolbarView,
-      FooterView
+      FooterView,
+      EventReceiver
     },
     store
   }
