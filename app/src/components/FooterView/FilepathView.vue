@@ -1,12 +1,15 @@
 <style scoped>
   .filepath {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
     padding: 1px 5px;
     border: 1px solid #b9b9b9;
-    margin: 2px 5px;
     border-radius: 2px;
     background: #ececec;
     box-shadow: inset 1px 1px rgba(0,0,0,.1);
-    min-width: 200px;
+    flex-grow: 1;
+    margin: 0 5px;
   }
   .icon-info-circled {
     opacity: 0.3;
@@ -16,15 +19,15 @@
   }
 </style>
 <template>
-  <p class="pull-left filepath">
-    <span class="icon icon-info-circled"></span>
+  <div class="filepath">
+    <span class="icon icon-pencil"></span>
       <span v-if="currentFilePath">
         {{currentFilePath}}
       </span>
       <span v-else class="placeholder">
         /path/to/file.md
       </span>
-  </p>
+  </div>
 </template>
 
 <script>

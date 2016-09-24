@@ -1,7 +1,7 @@
 <template>
   <footer class="toolbar toolbar-footer">
     <!--<filepath-view></filepath-view>-->
-    <toolbar-view></toolbar-view>
+    <!--<toolbar-view></toolbar-view>-->
     <height-view></height-view>
   </footer>
 </template>

@@ -20,12 +20,11 @@
 <template>
   <div class="app">
     <header class="toolbar">
-      <h1 class="title">cgmd-prevue</h1>
-      <!--<toolbar-view></toolbar-view>-->
+      <tabs-view></tabs-view>
+      <toolbar-view></toolbar-view>
     </header>
-    <tabs-view></tabs-view>
     <preview-view></preview-view>
-    <footer-view></footer-view>
+    <!--<footer-view></footer-view>-->
   </div>
 </template>
 

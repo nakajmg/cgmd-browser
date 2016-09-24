@@ -25,7 +25,7 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     height: 600,
     width: 800,
-    titleBarStyle: 'hidden'
+//    titleBarStyle: 'hidden',
   })
 
   mainWindow.loadURL(config.url)

@@ -3,16 +3,26 @@
     padding: 1px 5px;
     font-weight: 600;
     border: 1px solid #b9b9b9;
-    margin: 2px 5px;
-    border-radius: 2px;
+    border-radius: 1px;
     background: #ececec;
     box-shadow: inset 1px 1px 1px rgba(0,0,0,.1);
+    min-width: 83px;
+    text-align: right;
+    display: flex;
+    align-items: center;
+    margin-left: 0px;
+    margin-right: 5px;
+  }
+  .text {
+    flex-grow: 1;
   }
 </style>
 <template>
-  <p class="pull-right height">
+  <p class="height">
     <span class="icon icon-up-circled"></span>
-    {{previewHeight}} px
+    <span class="text">
+      {{previewHeight}} px
+    </span>
   </p>
 </template>
 
