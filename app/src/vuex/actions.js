@@ -17,3 +17,7 @@ export const setPreviewHeight = ({commit}, height) => {
   commit(types.SET_PREVIEW_HEIGHT, height)
 }
 
+export const setWordCount = ({commit}, count) => {
+  commit(types.SET_WORD_COUNT, count)
+}
+

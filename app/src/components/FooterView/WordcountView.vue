@@ -1,12 +1,11 @@
 <style scoped>
-  .height {
+  .count {
     padding: 1px 5px;
-    font-weight: 600;
     border: 1px solid #b9b9b9;
     border-radius: 1px;
     background: #ececec;
     box-shadow: inset 1px 1px 1px rgba(0,0,0,.1);
-    min-width: 83px;
+    min-width: 73px;
     text-align: right;
     display: flex;
     align-items: center;
@@ -18,21 +17,22 @@
   }
 </style>
 <template>
-  <div class="height">
-    <span class="icon icon-up-circled"></span>
+  <div class="count">
     <span class="text">
-      {{previewHeight}} px
+      {{wordCount}} 文字
     </span>
   </div>
 </template>
 
-<script>
+<script lang="babel">
   import {mapGetters} from 'vuex'
-  export default {
+  export default{
     computed: {
       ...mapGetters({
-        previewHeight: 'previewHeight'
+        wordCount: 'wordCount'
       })
+    },
+    components: {
     }
   }
 </script>

@@ -28,6 +28,10 @@
         ipcRenderer.once(current, (e, {md}) => {
           this.updatePreview(md)
         })
+        ipcRenderer.once(`${current}:count`, (e, {count}) => {
+          console.log(count)
+          this.setWordCount(count)
+        })
         ipcRenderer.send('openMarkdown', current)
       },
       updatePreview(md) {
@@ -42,7 +46,8 @@
         }
       },
       ...mapActions({
-        setPreviewHeight: 'setPreviewHeight'
+        setPreviewHeight: 'setPreviewHeight',
+        setWordCount: 'setWordCount'
       }),
       updateHeight(height) {
         this.setPreviewHeight(height)

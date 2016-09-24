@@ -18,6 +18,7 @@
       </button>
     </div>
     <filepath-view></filepath-view>
+    <wordcount-view></wordcount-view>
     <height-view></height-view>
     <button class="btn btn-default"
       title="ヘルプを見る">
@@ -29,6 +30,7 @@
 <script lang="babel">
   import FilepathView from './FooterView/FilepathView.vue'
   import HeightView from './FooterView/HeightView.vue'
+  import WordcountView from './FooterView/WordcountView.vue'
   import {remote} from 'electron'
   import {mapActions, mapGetters} from 'vuex'
   export default{
@@ -63,7 +65,8 @@
     },
     components: {
       FilepathView,
-      HeightView
+      HeightView,
+      WordcountView
     }
   }
 </script>

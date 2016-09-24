@@ -6,6 +6,7 @@ const fs = require('fs')
 const _ = require('lodash')
 const CodegirdMarkdown = require('codegrid-markdown')
 const cgmd = new CodegirdMarkdown()
+const wordCounter = require('./src/wordCounter')
 
 let mainWindow
 let config = {}
@@ -53,7 +54,9 @@ function createWindow () {
       return `(data:image/png;base64,${new Buffer(img).toString('base64')})`
     })
     const md = cgmd.render(replacedFile)
+    const count = wordCounter(file)
     mainWindow.webContents.send(filepath, {md})
+    mainWindow.webContents.send(`${filepath}:count`, {count})
   })
 
   console.log('mainWindow opened')
