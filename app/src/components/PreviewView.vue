@@ -1,7 +1,7 @@
 <template>
   <div class="preview-item">
     <div class="search-box" v-show="searchState">
-      <input type="text" class="search-input">
+      <input type="text" class="search-input" autofocus ref="search">
       <span class="search-count"></span>
       <button class="search-close" @click="closeSearchBox"><span class="icon icon-cancel"></span></button>
     </div>
@@ -11,7 +11,7 @@
 
 <script lang="babel">
   import {ipcRenderer} from 'electron'
-  import {currentFilePath} from '../vuex/getters'
+  import {currentFilePath, searchState} from '../vuex/getters'
   import {mapActions, mapGetters} from 'vuex'
   import ElectronSearchText from 'electron-search-text'
   export default{
@@ -45,6 +45,7 @@
         search.on('did-press-escape', () => {
           this.closeSearchBox()
         })
+        this.$store.watch(searchState, this.focusSearch)
       })
     },
     methods: {
@@ -87,6 +88,9 @@
       },
       closeSearchBox() {
         this.setSearchState(false)
+      },
+      focusSearch(bool) {
+        if (bool) this.$refs.search.focus()
       }
     }
   }
@@ -105,10 +109,10 @@
     /*display: none;*/
     position: absolute;
     top: -1px;
-    right: 36px;
+    right: 35px;
     box-sizing: border-box;
     height: 35px;
-    padding: 2px 5px 5px;
+    padding: 3px 5px 5px;
     background-color: #f6f6f6;
     border: 1px solid #c2c0c2;
     border-top: none;
@@ -139,7 +143,7 @@
     position: absolute;
     top: 0;
     right: 30px;
-    line-height: 30px;
+    line-height: 32px;
     color: rgba(0,0,0,.3);
     font-size: 14px;
   }
