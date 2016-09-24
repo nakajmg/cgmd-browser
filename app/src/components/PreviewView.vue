@@ -18,6 +18,11 @@
       this.$refs.preview.addEventListener('did-finish-load', () => {
         this.$store.watch(currentFilePath, this.renderPreview)
         this.$refs.preview.addEventListener('console-message', this.onConsoleMessage)
+        this.$refs.preview.addEventListener('did-start-loading', () => {
+          this.$refs.preview.stop()
+        })
+        this.$refs.preview.addEventListener('will-navigate', this.openOnBrowser)
+        this.$refs.preview.addEventListener('new-window', this.openOnBrowser)
       })
     },
     methods: {
@@ -51,6 +56,9 @@
       }),
       updateHeight(height) {
         this.setPreviewHeight(height)
+      },
+      openOnBrowser({url}) {
+        require('electron').shell.openExternal(url)
       }
     }
   }

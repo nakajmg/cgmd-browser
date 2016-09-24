@@ -4,7 +4,7 @@
       <button class="btn btn-default"
         @click="openFile"
         title="ファイルを開く">
-        <span class="icon icon-folder"></span>
+        <span class="icon icon-doc-text"></span>
       </button>
       <button class="btn btn-default"
         :disabled="isNotCurrent"

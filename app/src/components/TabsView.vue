@@ -7,7 +7,7 @@
   }
   .tabs {
     display: flex;
-    padding: 5px 30px 0px 10px;
+    padding: 10px 30px 0px 10px;
     align-items: flex-end;
   }
   .tab {
@@ -24,6 +24,10 @@
     position: relative;
     display: flex;
     min-height: 31px;
+    transition: opacity 500ms ease;
+  }
+  .tab:not(.active):hover {
+    opacity: 0.9;
   }
   .tab .close {
     /*position: absolute;*/
@@ -55,14 +59,15 @@
     background-color: #e2e1e2;
     text-align: center;
     font-size: 14px;
-    line-height: 20px;
-    width: 20px;
+    line-height: 16px;
+    width: 24px;
     border-right: 1px solid #9e9e9e;
     border-top: 1px solid #9e9e9e;
     border-top-right-radius: 2px;
   }
   .add:hover {
     color: #000;
+    border-color: #777;
   }
   .empty {
     font-size: 12px;

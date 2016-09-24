@@ -11,8 +11,8 @@
     flex-grow: 1;
     margin: 0 5px;
   }
-  .icon-info-circled {
-    opacity: 0.3;
+  .icon {
+    opacity: 0.4;
   }
   .placeholder {
     opacity: 0.4;
@@ -20,7 +20,7 @@
 </style>
 <template>
   <div class="filepath">
-    <span class="icon icon-pencil"></span>
+    <span class="icon icon-eye"></span>
       <span v-if="currentFilePath">
         {{currentFilePath}}
       </span>
