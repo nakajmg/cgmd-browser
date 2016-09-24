@@ -18,7 +18,8 @@ const state = {
   previewHeight: 0,
   favorite: [
     '/usr/local/work/pxg/codegrid-draft/drafts/2016-react_ex/2.md'
-  ]
+  ],
+  searchState: false
 }
 
 const mutations = {
@@ -64,6 +65,14 @@ const mutations = {
   [types.REMOVE_FAVORITE](state, filepath) {
     const index = _.indexOf(state.favorite, filepath)
     state.favorite.splice(index, 1)
+  },
+
+  [types.TOGGLE_SEARCH_STATE](state) {
+    state.searchState = !state.searchState
+  },
+
+  [types.SET_SEARCH_STATE](state, bool) {
+    state.searchState = bool
   }
 }
 

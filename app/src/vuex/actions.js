@@ -28,3 +28,11 @@ export const addFavorite = ({commit}, filepath) => {
 export const removeFavorite = ({commit}, filepath) => {
   commit(types.REMOVE_FAVORITE, filepath)
 }
+
+export const toggleSearchState = ({commit}) => {
+  commit(types.TOGGLE_SEARCH_STATE)
+}
+
+export const setSearchState = ({commit}, bool) => {
+  commit(types.SET_SEARCH_STATE, bool)
+}

@@ -31,6 +31,7 @@
     border-radius: 2px;
     box-shadow: 2px 2px 0 rgba(0,0,0,.1);
     min-width: 125px;
+    z-index: 1;
   }
   .table-striped td {
     text-align: left;
@@ -70,7 +71,8 @@
       </button>
       <button @click="toggleFavorite"
         :class="{'active': isVisibleFavorite}"
-        class="btn btn-default">
+        class="btn btn-default"
+        title="お気に入りリスト">
         <span class="icon icon-star"></span>
       </button>
     </div>
@@ -86,13 +88,16 @@
         <span class="icon icon-export"></span>
       </button>
       <button class="btn btn-default pull-right"
+        @click="toggleSearchState"
         :disabled="isNotCurrent"
+        :class="{'active': searchState}"
         title="検索">
         <span class="icon icon-search"></span>
       </button>
     </div>
 
     <button class="btn btn-default"
+      @click="openHelpPage"
       title="ヘルプを見る">
       <span class="icon icon-help-circled"></span>
     </button>
@@ -134,7 +139,8 @@
     computed: {
       ...mapGetters({
         currentFilePath: 'currentFilePath',
-        favorite: 'favorite'
+        favorite: 'favorite',
+        searchState: 'searchState'
       }),
       isNotCurrent() {
         return !this.currentFilePath
@@ -142,7 +148,8 @@
     },
     methods: {
       ...mapActions({
-        addFilePaths: 'addFilePaths'
+        addFilePaths: 'addFilePaths',
+        toggleSearchState: 'toggleSearchState'
       }),
       openFile() {
         const filePaths = remote.dialog.showOpenDialog({
@@ -170,6 +177,9 @@
       },
       openOnEditor() {
         OPEN(this.currentFilePath)
+      },
+      openHelpPage() {
+        OPEN('https://github.com/pxgrid/codegrid-markdown/blob/master/README.md')
       }
     },
     components: {
