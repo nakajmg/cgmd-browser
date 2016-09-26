@@ -111,6 +111,13 @@ function createWindow () {
           click() {
             mainWindow.webContents.send('cmd-tabs-move-left')
           }
+        },
+        {
+          label: 'Reload',
+          accelerator: 'Cmd+R',
+          click() {
+            mainWindow.webContents.reload()
+          }
         }
       ]
     },
@@ -125,10 +132,10 @@ function createWindow () {
           }
         },
         {
-          label: 'Show Favorite List',
+          label: 'Toggle Favorite List',
           accelerator: 'Cmd+B',
           click() {
-            mainWindow.webContents.send('cmd-show-favorite-list')
+            mainWindow.webContents.send('cmd-toggle-favorite-list')
           }
         }
       ]

@@ -11,11 +11,11 @@
       ipcRenderer.on('cmd-open-file', this.onOpenFile)
       ipcRenderer.on('cmd-tabs-move-right', this.tabsMoveRight)
       ipcRenderer.on('cmd-tabs-move-left', this.tabsMoveLeft)
-      ipcRenderer.on('cmd-toggle-search', this.toggleSearchState)
       ipcRenderer.on('cmd-tabs-close', this.onTabsClose)
+      ipcRenderer.on('cmd-tabs-reload', this.onTabsReload)
+      ipcRenderer.on('cmd-toggle-search', this.toggleSearchState)
       ipcRenderer.on('cmd-open-on-editor', this.onOpenOnEditor)
       ipcRenderer.on('cmd-toggle-favorite', this.onToggleFavorite)
-      ipcRenderer.on('cmd-toggle-favorite-list', this.noop) // favリストの状態をstoreに持たせないと
     },
     computed: {
       ...mapGetters({
@@ -28,6 +28,7 @@
       },
       ...mapActions({
         addFilePaths: 'addFilePaths',
+        setCurrentFilePath: 'setCurrentFilePath',
         removeFilePaths: 'removeFilePaths',
         tabsMoveRight: 'tabsMoveRight',
         tabsMoveLeft: 'tabsMoveLeft',
@@ -56,6 +57,13 @@
       onTabsClose() {
         this.removeFilePaths(this.currentFilePath)
         ipcRenderer.send('stopWatching', this.currentFilePath)
+      },
+      onTabsReload() {
+        const prev = this.currentFilePath
+        this.setCurrentFilePath('')
+        setTimeout(() => {
+          this.setCurrentFilePath(prev)
+        }, 0)
       }
     }
   }

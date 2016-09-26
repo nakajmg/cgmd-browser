@@ -43,12 +43,19 @@
     types.REMOVE_FILE_PATHS,
     types.ADD_FILE_PATHS,
     types.ADD_FAVORITE,
-    types.REMOVE_FAVORITE
+    types.REMOVE_FAVORITE,
+    types.TOGGLE_FAVORITE,
+    types.TABS_MOVE_LEFT,
+    types.TABS_MOVE_RIGHT
   ]
+
+  const save = _.debounce((state) => {
+    window.localStorage.setItem('prevue-state', JSON.stringify(state))
+  }, 100)
+
   store.subscribe((mutation, state) => {
-    console.log(mutation.type)
     if (_.includes(mutations, mutation.type)) {
-      window.localStorage.setItem('prevue-state', JSON.stringify(state))
+      save(state)
     }
   })
 

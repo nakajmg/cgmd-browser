@@ -4,6 +4,10 @@
     border-left: 1px;
     margin-left: 0;
   }
+  .btn-default:not([disabled]):not(.active):hover {
+    background-image: none;
+    background-color: #e0e0e0;
+  }
   [disabled] {
     opacity: 0.5;
     pointer-events: none;
@@ -32,6 +36,13 @@
     box-shadow: 2px 2px 0 rgba(0,0,0,.1);
     min-width: 125px;
     z-index: 1;
+    .favorite-item {
+      &:hover {
+        color: #fff;
+        background-color: #116cd6;
+        cursor: pointer;
+      }
+    }
   }
   .table-striped td {
     text-align: left;
@@ -113,8 +124,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="fav in favorite">
-            <td @click="open(fav)">{{abbrPath(fav)}}</td>
+          <tr v-for="path in favorite">
+            <td @click="open(path)" class="favorite-item">{{abbrPath(path)}}</td>
           </tr>
         </tbody>
       </table>
@@ -126,7 +137,7 @@
   import FilepathView from './FooterView/FilepathView.vue'
   import HeightView from './FooterView/HeightView.vue'
   import WordcountView from './FooterView/WordcountView.vue'
-  import {remote} from 'electron'
+  import {remote, ipcRenderer} from 'electron'
   import PATH from 'path'
   import OPEN from 'open'
   import {mapActions, mapGetters} from 'vuex'
@@ -145,6 +156,9 @@
       isNotCurrent() {
         return !this.currentFilePath
       }
+    },
+    mounted() {
+      ipcRenderer.on('cmd-toggle-favorite-list', this.toggleFavorite)
     },
     methods: {
       ...mapActions({
