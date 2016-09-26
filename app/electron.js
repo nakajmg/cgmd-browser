@@ -48,6 +48,18 @@ function createWindow () {
 
   const menu = Menu.buildFromTemplate([
     {
+      label: 'prevue',
+      submenu: [
+        {
+          label: 'Quit',
+          accelerator: 'Command+Q',
+          click: () => {
+            app.quit()
+          }
+        }
+      ]
+    },
+    {
       label: 'Edit',
       submenu: [
         {
@@ -71,7 +83,7 @@ function createWindow () {
           click() {
             mainWindow.webContents.send('cmd-toggle-search')
           }
-        }
+        },
       ]
     },
     {
@@ -140,6 +152,17 @@ function createWindow () {
         }
       ]
     },
+//    {
+//      label: 'Speech',
+//      submenu: [
+//        {
+//          role: 'startspeaking'
+//        },
+//        {
+//          role: 'stopspeaking'
+//        }
+//      ]
+//    },
     {
       label: 'Debug',
       submenu: [
