@@ -53,14 +53,21 @@
           this.renderPreview(this.currentFilePath)
         }
         ipcRenderer.on('updateMarkdown', this.onUpdateMarkdown)
-        ipcRenderer.on('attachFrameContent', (e, {path, url, html}) => {
-          if (this.currentFilePath === path) {
+        ipcRenderer.on('attachFrameContent', (e, {filepath, url, html}) => {
+          if (this.currentFilePath === filepath) {
             this.$refs.preview.executeJavaScript(`
               attach('${url}', '${escape(html)}')
             `)
           }
         })
-        this.$refs.preview.openDevTools()
+        ipcRenderer.on('attachExternalImage', (e, {filepath, src, data}) => {
+          if (this.currentFilePath === filepath) {
+            this.$refs.preview.executeJavaScript(`
+              attachImage('${src}', '${data}')
+            `)
+          }
+        })
+//        this.$refs.preview.openDevTools()
       })
     },
     methods: {

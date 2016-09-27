@@ -41,8 +41,25 @@
       $('iframe').each((index, el) => {
         const $el = $(el)
         const src = $el.attr('src') || $el.attr('data-src')
+
+        const isDeferrd = $el.attr('data-deferred')
+        // data-srcだったらクリックして再生みたいなのつける
         if (src === url) {
           const iframe = document.createElement('iframe')
+//          iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin')
+
+          if (isDeferrd) {
+            const $play = $('<div class="CG2-livecode__clickToPlay" data-livecode-play=""></div>')
+            $play.on('click', () => {
+              $play.remove()
+            })
+
+//            data-livecode-deferredが親
+//            その下のCG2-livecode__navに
+//            <a href="#" data-livecode-play="">サンプルを再生する</a>を追加
+
+            $(el.parentElement).append($play)
+          }
           $el.replaceWith(iframe)
           iframe.contentWindow.document.open()
           iframe.contentWindow.document.close()
@@ -50,6 +67,10 @@
           return
         }
       })
+    }
+
+    function attachImage(src, data) {
+      $(`img[src="${src}"]`).attr('src', data)
     }
 
     const onScroll = $.debounce(300, () => {

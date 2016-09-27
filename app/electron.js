@@ -215,6 +215,21 @@ function createWindow () {
     mainWindow.webContents.send(filepath, {md})
     mainWindow.webContents.send(`${filepath}:count`, {count})
 
+    const externalImages = []
+    md.replace(/<img.*?src="(https?:\/\/.*?)".*?>/g, (rep, $1) => {
+      externalImages.push($1)
+      return rep
+    })
+
+    externalImages.forEach((src) => {
+      request.get(`${src}`, (err, response, body) => {
+        if (err) return
+        const data = "data:" + response.headers["content-type"] + ";base64," + new Buffer(body).toString('base64');
+        
+        mainWindow.webContents.send('attachExternalImage', {filepath, src, data})
+      })
+    })
+    
     // ローカルじゃない画像を取得してhtmlに埋め込む処理を書く
 
     urls.forEach((url) => {
@@ -227,15 +242,17 @@ function createWindow () {
             return rep
           })
 
-          const html = res.data.replace('<head>', (match) => {
-            let replaced =`${match}\n<base href="${url}">`
-            return replaced
-          })
+          const html = res.data
+//          const html = res.data.replace('<head>', (match) => {
+//            let replaced =`${match}\n<base href="${url}">`
+//            return replaced
+//          })
 
           // iframe内の画像をdarauriに変換して埋め込む
           const promises = images.map((src) => {
             return new Promise(function(resolve, reject) {
               request.get(`${dir}${path.sep}${src}`, (err, response, body) => {
+                if (err) reject(err)
                 const data = "data:" + response.headers["content-type"] + ";base64," + new Buffer(body).toString('base64');
                 resolve({src, data})
               })
@@ -254,7 +271,7 @@ function createWindow () {
                 })
               })
 
-              mainWindow.webContents.send('attachFrameContent', { path: filepath ,url, html: replaced })
+              mainWindow.webContents.send('attachFrameContent', { filepath ,url, html: replaced })
 
             }, (err) => {
               console.log('fail')
