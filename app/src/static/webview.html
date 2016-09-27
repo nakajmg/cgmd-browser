@@ -14,7 +14,6 @@
   </div>
   <script src="http://ui.codegrid.net/assets2/js/codegrid-ui.min.js"></script>
   <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-  <!--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>-->
   <script>
 
     /*
@@ -46,17 +45,21 @@
         // data-srcだったらクリックして再生みたいなのつける
         if (src === url) {
           const iframe = document.createElement('iframe')
-//          iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin')
 
           if (isDeferrd) {
+            const $parent = $el.closest('[data-livecode-deferred]')
+            const $nav = $parent.find('.CG2-livecode__nav > ul')
+            const $btn = $('<li><a data-livecode-play>サンプルを再生する</a></li>')
             const $play = $('<div class="CG2-livecode__clickToPlay" data-livecode-play=""></div>')
+
             $play.on('click', () => {
-              $play.remove()
+              $parent.addClass('CG2-livecode--isRunning')
             })
 
-//            data-livecode-deferredが親
-//            その下のCG2-livecode__navに
-//            <a href="#" data-livecode-play="">サンプルを再生する</a>を追加
+            $btn.on('click', () => {
+              $parent.removeClass('CG2-livecode--isRunning')
+            })
+            $nav.find('li').before($btn)
 
             $(el.parentElement).append($play)
           }
