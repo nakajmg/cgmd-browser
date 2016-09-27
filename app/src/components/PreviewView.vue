@@ -53,6 +53,14 @@
           this.renderPreview(this.currentFilePath)
         }
         ipcRenderer.on('updateMarkdown', this.onUpdateMarkdown)
+        ipcRenderer.on('attachFrameContent', (e, {path, url, html}) => {
+          if (this.currentFilePath === path) {
+            this.$refs.preview.executeJavaScript(`
+              attach('${url}', '${escape(html)}')
+            `)
+          }
+        })
+        this.$refs.preview.openDevTools()
       })
     },
     methods: {

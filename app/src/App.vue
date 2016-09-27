@@ -15,6 +15,14 @@
     display: flex;
     flex-direction: column;
   }
+  .preview {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+  }
+  .toolbar {
+    min-height: initial;
+  }
 </style>
 
 <template>
@@ -23,7 +31,10 @@
       <tabs-view></tabs-view>
       <toolbar-view></toolbar-view>
     </header>
-    <preview-view></preview-view>
+    <div class="preview">
+      <filetree-view></filetree-view>
+      <preview-view></preview-view>
+    </div>
     <event-receiver></event-receiver>
     <!--<footer-view></footer-view>-->
   </div>
@@ -35,6 +46,7 @@
   import TabsView from 'components/TabsView.vue'
   import PreviewView from 'components/PreviewView.vue'
   import FooterView from 'components/FooterView.vue'
+  import FiletreeView from 'components/FiletreeView.vue'
   import EventReceiver from 'components/EventReceiver.vue'
   import * as types from './vuex/mutation-types'
   import _ from 'lodash'
@@ -65,7 +77,8 @@
       TabsView,
       ToolbarView,
       FooterView,
-      EventReceiver
+      EventReceiver,
+      FiletreeView
     },
     store
   }

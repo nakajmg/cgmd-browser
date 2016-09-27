@@ -1,5 +1,5 @@
 'use strict'
-
+const request = require('request').defaults({ encoding: null });
 const path = require('path')
 const {app, BrowserWindow, ipcMain, Menu, dialog} = require('electron')
 const fs = require('fs')
@@ -9,6 +9,8 @@ const cgmd = new CodegirdMarkdown()
 const wordCounter = require('./src/wordCounter')
 const watcher = {}
 const chokidar = require('chokidar')
+const jade = require('jade')
+const axios = require('axios')
 let mainWindow
 let config = {}
 
@@ -188,16 +190,81 @@ function createWindow () {
 
   function openMarkdown(filepath) {
     const file = fs.readFileSync(filepath, 'utf8')
+    const extension = path.extname(filepath)
+    const count = wordCounter(file)
+
+    if (extension === '.jade') {
+      const html = jade.render(file)
+      mainWindow.webContents.send(filepath, {md: html})
+      mainWindow.webContents.send(`${filepath}:count`, {count})
+      return
+    }
     const dirname = path.dirname(filepath)
     const replacedFile = file.replace(/\(\.\/(.*)\)/g, (rep, $1) => {
       let local = `${dirname}/${$1}`;
       let img = fs.readFileSync(local)
       return `(data:image/png;base64,${new Buffer(img).toString('base64')})`
     })
+    const urls = []
+    replacedFile.replace(/<iframe.*(data-)?src="(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*))".*<\/iframe>/g, (rep, $1, $2) => {
+      urls.push($2)
+      return rep
+    })
+
     const md = cgmd.render(replacedFile)
-    const count = wordCounter(file)
     mainWindow.webContents.send(filepath, {md})
     mainWindow.webContents.send(`${filepath}:count`, {count})
+
+    // ローカルじゃない画像を取得してhtmlに埋め込む処理を書く
+
+    urls.forEach((url) => {
+      axios.get(url)
+        .then((res) => {
+          const dir = path.dirname(url)
+          const images = []
+          res.data.replace(/<img.*?src="(.*)".*?\/>/g, (rep, $1, $2) => {
+            images.push(`${$1}`)
+            return rep
+          })
+
+          const html = res.data.replace('<head>', (match) => {
+            let replaced =`${match}\n<base href="${url}">`
+            return replaced
+          })
+
+          // iframe内の画像をdarauriに変換して埋め込む
+          const promises = images.map((src) => {
+            return new Promise(function(resolve, reject) {
+              request.get(`${dir}${path.sep}${src}`, (err, response, body) => {
+                const data = "data:" + response.headers["content-type"] + ";base64," + new Buffer(body).toString('base64');
+                resolve({src, data})
+              })
+            })
+
+          })
+
+          Promise.all(promises)
+            .then((ress) => {
+              let replaced = html
+              ress.forEach((res) => {
+                let regex = new RegExp(`<img.*src="${res.src}".*\/>`)
+
+                replaced = replaced.replace(regex, (rep) => {
+                  return `<img src="${res.data}" />`
+                })
+              })
+
+              mainWindow.webContents.send('attachFrameContent', { path: filepath ,url, html: replaced })
+
+            }, (err) => {
+              console.log('fail')
+              console.log(err)
+            })
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    })
   }
 
   ipcMain.on('openMarkdown', (e, filepath) => {
