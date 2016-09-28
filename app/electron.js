@@ -230,23 +230,18 @@ function createWindow () {
       })
     })
     
-    // ローカルじゃない画像を取得してhtmlに埋め込む処理を書く
-
+    // ローカルじゃない画像を取得してhtmlに埋め込む処理
     urls.forEach((url) => {
       axios.get(url)
         .then((res) => {
           const dir = path.dirname(url)
           const images = []
-          res.data.replace(/<img.*?src="(.*)".*?\/>/g, (rep, $1, $2) => {
+          res.data.replace(/<img.*?src="(.*)".*?\/>/g, (rep, $1) => {
             images.push(`${$1}`)
             return rep
           })
 
           const html = res.data
-//          const html = res.data.replace('<head>', (match) => {
-//            let replaced =`${match}\n<base href="${url}">`
-//            return replaced
-//          })
 
           // iframe内の画像をdarauriに変換して埋め込む
           const promises = images.map((src) => {

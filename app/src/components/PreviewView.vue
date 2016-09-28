@@ -1,3 +1,66 @@
+<style>
+  .preview-item {
+    flex-grow: 1;
+    display: flex;
+    position: relative;
+  }
+  .webview {
+    flex-grow: 1;
+  }
+  .search-box {
+    /*display: none;*/
+    position: absolute;
+    top: -1px;
+    right: 35px;
+    box-sizing: border-box;
+    height: 35px;
+    padding: 3px 5px 5px;
+    background-color: #f6f6f6;
+    border: 1px solid #c2c0c2;
+    border-top: none;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+  }
+  /*.search-box:before {*/
+  /*content: '\E803';*/
+  /*font-family: photon-entypo;*/
+  /*position: absolute;*/
+  /*color: #555;*/
+  /*opacity: 0.1;*/
+  /*font-size: 1.4em;*/
+  /*margin-left: 5px;*/
+  /*margin-top: 2px;*/
+  /*}*/
+  .search-input {
+    box-sizing: border-box;
+    width: 220px;
+    padding: 3px;
+    font-size: 12px;
+    border-radius: 2px;
+    border: 1px solid rgba(0,0,0,.1);
+    outline-width: 2px;
+    padding-right: 30px;
+  }
+  .search-count {
+    position: absolute;
+    top: 0;
+    right: 30px;
+    line-height: 32px;
+    color: rgba(0,0,0,.3);
+    font-size: 14px;
+  }
+  .state-visible {
+    display: block;
+  }
+  .search-close {
+    background: transparent;
+    border: none;
+    width: 15px;
+    font-size: 15px;
+    outline-width: 0;
+  }
+</style>
+
 <template>
   <div class="preview-item">
     <div class="search-box" v-show="searchState">
@@ -30,43 +93,18 @@
     },
     mounted() {
       this.$refs.preview.addEventListener('did-finish-load', () => {
-        this.$store.watch(currentFilePath, this.renderPreview)
-        this.$refs.preview.addEventListener('console-message', this.onConsoleMessage)
-        this.$refs.preview.addEventListener('did-start-loading', () => {
-          this.$refs.preview.stop()
-        })
-        this.$refs.preview.addEventListener('will-navigate', this.openOnBrowser)
-        this.$refs.preview.addEventListener('new-window', this.openOnBrowser)
-
-        const search = new ElectronSearchText({
-          target: '#preview',
-          input: '.search-input',
-          count: '.search-count',
-          box: '.search-box',
-          visibleClass: '.state-visible'
-        })
-        search.on('did-press-escape', () => {
-          this.closeSearchBox()
-        })
-        this.$store.watch(searchState, this.focusSearch)
+        this.initSearchBox()
         if (this.currentFilePath) {
           this.renderPreview(this.currentFilePath)
         }
+        this.$store.watch(currentFilePath, this.renderPreview)
+        this.$refs.preview.addEventListener('console-message', this.onConsoleMessage)
+        this.$refs.preview.addEventListener('did-start-loading', this.$refs.preview.stop)
+        this.$refs.preview.addEventListener('will-navigate', this.openOnBrowser)
+        this.$refs.preview.addEventListener('new-window', this.openOnBrowser)
         ipcRenderer.on('updateMarkdown', this.onUpdateMarkdown)
-        ipcRenderer.on('attachFrameContent', (e, {filepath, url, html}) => {
-          if (this.currentFilePath === filepath) {
-            this.$refs.preview.executeJavaScript(`
-              attach('${url}', '${escape(html)}')
-            `)
-          }
-        })
-        ipcRenderer.on('attachExternalImage', (e, {filepath, src, data}) => {
-          if (this.currentFilePath === filepath) {
-            this.$refs.preview.executeJavaScript(`
-              attachImage('${src}', '${data}')
-            `)
-          }
-        })
+        ipcRenderer.on('attachFrameContent', this.onAttachFrameContent)
+        ipcRenderer.on('attachExternalImage', this.onAttachExternalImage)
 //        this.$refs.preview.openDevTools()
       })
     },
@@ -100,6 +138,17 @@
           update('${escape(md)}',${scroll})
         `)
       },
+      initSearchBox() {
+        const search = new ElectronSearchText({
+          target: '#preview',
+          input: '.search-input',
+          count: '.search-count',
+          box: '.search-box',
+          visibleClass: '.state-visible'
+        })
+        search.on('did-press-escape', this.closeSearchBox)
+        this.$store.watch(searchState, this.focusSearch)
+      },
       onConsoleMessage({message}) {
         if (message && this.regexpHeight.test(message)) {
           let height = message.replace(this.regexpHeight, '$1')
@@ -129,70 +178,20 @@
         if (this.currentFilePath === filepath) {
           this.renderPreview(filepath)
         }
-      }
+      },
+      onAttachFrameContent(e, {filepath, src, data}) {
+        if (this.currentFilePath === filepath) {
+          this.$refs.preview.executeJavaScript(`
+              attach('${url}', '${escape(html)}')
+            `)
+        }
+      },
+      onAttachExternalImage(e, {filepath, src, data}) {
+        if (this.currentFilePath === filepath) {
+          this.$refs.preview.executeJavaScript(`
+            attachImage('${src}', '${data}')
+          `)
+        }
     }
   }
 </script>
-
-<style>
-  .preview-item {
-    flex-grow: 1;
-    display: flex;
-    position: relative;
-  }
-  .webview {
-    flex-grow: 1;
-  }
-  .search-box {
-    /*display: none;*/
-    position: absolute;
-    top: -1px;
-    right: 35px;
-    box-sizing: border-box;
-    height: 35px;
-    padding: 3px 5px 5px;
-    background-color: #f6f6f6;
-    border: 1px solid #c2c0c2;
-    border-top: none;
-    border-bottom-left-radius: 2px;
-    border-bottom-right-radius: 2px;
-  }
-  /*.search-box:before {*/
-    /*content: '\E803';*/
-    /*font-family: photon-entypo;*/
-    /*position: absolute;*/
-    /*color: #555;*/
-    /*opacity: 0.1;*/
-    /*font-size: 1.4em;*/
-    /*margin-left: 5px;*/
-    /*margin-top: 2px;*/
-  /*}*/
-  .search-input {
-    box-sizing: border-box;
-    width: 220px;
-    padding: 3px;
-    font-size: 12px;
-    border-radius: 2px;
-    border: 1px solid rgba(0,0,0,.1);
-    outline-width: 2px;
-    padding-right: 30px;
-  }
-  .search-count {
-    position: absolute;
-    top: 0;
-    right: 30px;
-    line-height: 32px;
-    color: rgba(0,0,0,.3);
-    font-size: 14px;
-  }
-  .state-visible {
-    display: block;
-  }
-  .search-close {
-    background: transparent;
-    border: none;
-    width: 15px;
-    font-size: 15px;
-    outline-width: 0;
-  }
-</style>
