@@ -35,7 +35,7 @@
     border-radius: 2px;
     box-shadow: 2px 2px 0 rgba(0,0,0,.1);
     min-width: 125px;
-    z-index: 1;
+    z-index: 2;
     .favorite-item {
       &:hover {
         color: #fff;
@@ -76,9 +76,14 @@
   <div class="header-toolbar">
     <div class="btn-group">
       <button class="btn btn-default"
-        @click="openFile"
-        title="ファイルを開く">
-        <span class="icon icon-doc-text"></span>
+        @click="openFolder"
+        title="フォルダを開く">
+        <span class="icon icon-cog"></span>
+      </button>
+      <button class="btn btn-default"
+        @click="toggleMdDirectoryState"
+        :class="{'active': mdDirectoryState}">
+        <span class="icon icon-folder"></span>
       </button>
       <button @click="toggleFavorite"
         :class="{'active': isVisibleFavorite}"
@@ -151,7 +156,9 @@
       ...mapGetters({
         currentFilePath: 'currentFilePath',
         favorite: 'favorite',
-        searchState: 'searchState'
+        searchState: 'searchState',
+        mdDirectory: 'mdDirectory',
+        mdDirectoryState: 'mdDirectoryState'
       }),
       isNotCurrent() {
         return !this.currentFilePath
@@ -163,7 +170,9 @@
     methods: {
       ...mapActions({
         addFilePaths: 'addFilePaths',
-        toggleSearchState: 'toggleSearchState'
+        toggleSearchState: 'toggleSearchState',
+        setMdDirectory: 'setMdDirectory',
+        toggleMdDirectoryState: 'toggleMdDirectoryState'
       }),
       openFile() {
         const filePaths = remote.dialog.showOpenDialog({
@@ -194,6 +203,17 @@
       },
       openHelpPage() {
         OPEN('https://github.com/pxgrid/codegrid-markdown/blob/master/README.md')
+      },
+      openFolder() {
+        const dirPaths = remote.dialog.showOpenDialog({
+          properties: ['openDirectory']
+        })
+        if (dirPaths) {
+          this.setMdDirectory(dirPaths[0])
+          if (!this.mdDirectoryState) {
+            this.toggleMdDirectoryState()
+          }
+        }
       }
     },
     components: {

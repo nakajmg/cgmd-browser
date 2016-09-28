@@ -58,7 +58,10 @@
     types.REMOVE_FAVORITE,
     types.TOGGLE_FAVORITE,
     types.TABS_MOVE_LEFT,
-    types.TABS_MOVE_RIGHT
+    types.TABS_MOVE_RIGHT,
+    types.SET_MD_DIRECTORY,
+    types.SET_SEARCH_WORD,
+    types.TOGGLE_MD_DIRECTORY_STATE
   ]
 
   const save = _.debounce((state) => {

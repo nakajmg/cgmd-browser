@@ -1,4 +1,14 @@
 <style scoped lang="scss">
+  .file-tree {
+    position: relative;
+    overflow: scroll;
+    width: 200px;
+    border-right: 1px solid #989898;
+    ul {
+      width: 100%;
+      margin-top: 31px;
+    }
+  }
   .tree-search {
     padding: 3px 2px;
     border-bottom: 1px solid #cccccc;
@@ -17,16 +27,6 @@
       left: 7px;
       top: 5px;
       color: #9c9c9c;
-    }
-  }
-  .file-tree {
-    position: relative;
-    overflow: scroll;
-    width: 200px;
-    border-right: 1px solid #989898;
-    ul {
-      width: 100%;
-      margin-top: 31px;
     }
   }
   .tree-folder {
@@ -87,12 +87,12 @@
 </style>
 
 <template>
-  <div class="file-tree">
+  <div class="file-tree" v-show="mdDirectoryState">
     <div class="tree-search">
       <span class="icon icon-search"></span>
       <input type="text" v-model="search">
     </div>
-    <ul v-if="filterdItem.length">
+    <ul v-if="isItem">
       <li class="tree-folder" v-for="(item, index) in filterdItem">
         <label :for="'file-folder' + index">
           <span class="icon icon-folder"></span>
@@ -125,31 +125,57 @@
   import dtree from 'directory-tree'
   import _ from 'lodash'
   import {mapActions, mapGetters} from 'vuex'
+  import {mdDirectory} from '../vuex/getters'
   export default{
     data() {
       return {
-        search: '2016',
-        tree: dtree('/usr/local/work/pxg/codegrid-draft/drafts/', ['.md', '.jade']).children
+        tree: null,
+        search: ''
       }
     },
     computed: {
       ...mapGetters({
-        currentFilePath: 'currentFilePath'
+        currentFilePath: 'currentFilePath',
+        mdDirectory: 'mdDirectory',
+        searchWord: 'searchWord',
+        mdDirectoryState: 'mdDirectoryState'
       }),
       filterdItem() {
         if (this.search === '') return this.tree
+        if (!this.tree) return null
         return _.filter(this.tree, (item) => {
           return item.name.indexOf(this.search) !== -1
         })
+      },
+      isItem() {
+        return this.filterdItem && !!this.filterdItem.length
       }
     },
     methods: {
       ...mapActions({
-        addFilePaths: 'addFilePaths'
+        addFilePaths: 'addFilePaths',
+        setSearchWord: 'setSearchWord'
       }),
       select(filepath) {
         this.addFilePaths(filepath)
+      },
+      setDir(dirpath) {
+        this.tree = dtree(dirpath, ['.md']).children
       }
+    },
+    mounted() {
+      this.search = this.searchWord
+      this.$store.watch(mdDirectory, (dirpath) => {
+        const tree = dtree(dirpath, ['.md']).children
+        this.tree = tree
+      })
+      if (this.mdDirectory) {
+        this.setDir(this.mdDirectory)
+      }
+      this.$watch('search', _.debounce((searchWord) => {
+        this.setSearchWord(searchWord)
+      }, 500)
+      )
     }
   }
 </script>

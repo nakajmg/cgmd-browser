@@ -14,7 +14,10 @@ const state = pastState ? {...JSON.parse(pastState), wordCount: '-', previewHeig
   filePaths: [],
   previewHeight: '-',
   favorite: [],
-  searchState: false
+  searchState: false,
+  searchWord: '',
+  mdDirectory: '',
+  mdDirectoryState: true
 }
 
 const mutations = {
@@ -80,6 +83,10 @@ const mutations = {
     state.searchState = bool
   },
 
+  [types.SET_SEARCH_WORD](state, word) {
+    state.searchWord = word
+  },
+
   [types.TABS_MOVE_RIGHT](state) {
     if (state.filePaths.length === 0) return
     const index = _.indexOf(state.filePaths, state.currentFilePath)
@@ -100,6 +107,14 @@ const mutations = {
     else {
       state.currentFilePath = state.filePaths[index - 1]
     }
+  },
+
+  [types.SET_MD_DIRECTORY](state, dirpath) {
+    state.mdDirectory = dirpath
+  },
+
+  [types.TOGGLE_MD_DIRECTORY_STATE](state) {
+    state.mdDirectoryState = !state.mdDirectoryState
   }
 
 }

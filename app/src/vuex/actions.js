@@ -41,10 +41,22 @@ export const setSearchState = ({commit}, bool) => {
   commit(types.SET_SEARCH_STATE, bool)
 }
 
+export const setSearchWord = ({commit}, word) => {
+  commit(types.SET_SEARCH_WORD, word)
+}
+
 export const tabsMoveRight = ({commit}) => {
   commit(types.TABS_MOVE_RIGHT)
 }
 
 export const tabsMoveLeft = ({commit}) => {
   commit(types.TABS_MOVE_LEFT)
+}
+
+export const setMdDirectory = ({commit}, dirpath) => {
+  commit(types.SET_MD_DIRECTORY, dirpath)
+}
+
+export const toggleMdDirectoryState = ({commit}) => {
+  commit(types.TOGGLE_MD_DIRECTORY_STATE)
 }

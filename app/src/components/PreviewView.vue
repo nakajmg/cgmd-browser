@@ -179,7 +179,7 @@
           this.renderPreview(filepath)
         }
       },
-      onAttachFrameContent(e, {filepath, src, data}) {
+      onAttachFrameContent(e, {filepath, url, html}) {
         if (this.currentFilePath === filepath) {
           this.$refs.preview.executeJavaScript(`
               attach('${url}', '${escape(html)}')
@@ -192,6 +192,7 @@
             attachImage('${src}', '${data}')
           `)
         }
+      }
     }
   }
 </script>
