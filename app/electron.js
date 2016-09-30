@@ -140,7 +140,7 @@ function createWindow () {
       submenu: [
         {
           label: 'Toggle Favorite',
-          accelerator: 'Cmd+D',
+          accelerator: 'Cmd+Shift+B',
           click() {
             mainWindow.webContents.send('cmd-toggle-favorite')
           }
@@ -165,6 +165,32 @@ function createWindow () {
 //        }
 //      ]
 //    },
+    {
+      label: 'Finder',
+      submenu: [
+        {
+          label: 'Set Directory',
+          accelerator: 'Cmd+Alt+D',
+          click() {
+            mainWindow.webContents.send('cmd-set-directory')
+          }
+        },
+        {
+          label: 'Toggle Finder',
+          accelerator: 'Cmd+Shift+D',
+          click() {
+            mainWindow.webContents.send('cmd-toggle-directory')
+          }
+        },
+        {
+          label: 'Search on Finder',
+          accelerator: 'Cmd+D',
+          click() {
+            mainWindow.webContents.send('cmd-search-directory')
+          }
+        }
+      ]
+    },
     {
       label: 'Debug',
       submenu: [

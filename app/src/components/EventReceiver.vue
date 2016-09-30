@@ -16,6 +16,8 @@
       ipcRenderer.on('cmd-toggle-search', this.toggleSearchState)
       ipcRenderer.on('cmd-open-on-editor', this.onOpenOnEditor)
       ipcRenderer.on('cmd-toggle-favorite', this.onToggleFavorite)
+      ipcRenderer.on('cmd-set-directory', this.onSetDirectory)
+      ipcRenderer.on('cmd-toggle-directory', this.toggleMdDirectoryState)
     },
     computed: {
       ...mapGetters({
@@ -33,7 +35,9 @@
         tabsMoveRight: 'tabsMoveRight',
         tabsMoveLeft: 'tabsMoveLeft',
         toggleFavorite: 'toggleFavorite',
-        toggleSearchState: 'toggleSearchState'
+        toggleSearchState: 'toggleSearchState',
+        setMdDirectory: 'setMdDirectory',
+        toggleMdDirectoryState: 'toggleMdDirectoryState'
       }),
       onOpenFile() {
         const filePaths = remote.dialog.showOpenDialog({
@@ -46,6 +50,14 @@
           filePaths.forEach((filepath) => {
             this.addFilePaths(filepath)
           })
+        }
+      },
+      onSetDirectory() {
+        const dirPaths = remote.dialog.showOpenDialog({
+          properties: ['openDirectory']
+        })
+        if (dirPaths) {
+          this.setMdDirectory(dirPaths[0])
         }
       },
       onOpenOnEditor() {

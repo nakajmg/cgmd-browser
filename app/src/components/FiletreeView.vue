@@ -96,7 +96,7 @@
   <div class="file-tree" :class="{'active': mdDirectoryState}">
     <div class="tree-search">
       <span class="icon icon-search"></span>
-      <input type="text" v-model="search">
+      <input type="text" v-model="search" ref="input">
     </div>
     <ul v-if="isItem">
       <li class="tree-folder" v-for="(item, index) in filterdItem">
@@ -132,6 +132,7 @@
   import _ from 'lodash'
   import {mapActions, mapGetters} from 'vuex'
   import {mdDirectory} from '../vuex/getters'
+  import {ipcRenderer} from 'electron'
   export default{
     data() {
       return {
@@ -160,16 +161,24 @@
     methods: {
       ...mapActions({
         addFilePaths: 'addFilePaths',
-        setSearchWord: 'setSearchWord'
+        setSearchWord: 'setSearchWord',
+        toggleMdDirectoryState: 'toggleMdDirectoryState'
       }),
       select(filepath) {
         this.addFilePaths(filepath)
       },
       setDir(dirpath) {
         this.tree = dtree(dirpath, ['.md']).children
+      },
+      onSearchDirectory() {
+        if (!this.mdDirectoryState) {
+          this.toggleMdDirectoryState()
+        }
+        this.$refs.input.focus()
       }
     },
     mounted() {
+      ipcRenderer.on('cmd-search-directory', this.onSearchDirectory)
       this.search = this.searchWord
       this.$store.watch(mdDirectory, (dirpath) => {
         const tree = dtree(dirpath, ['.md']).children
