@@ -18,7 +18,8 @@
     padding: 6px 5px 6px 5px;
     border-top: 1px solid #989898;
     border-bottom: 1px solid #989898;
-    flex-wrap: wrap;
+    /*flex-wrap: wrap;*/
+    min-width: 800px;
     position: relative;
   }
   .btn-group {
@@ -35,7 +36,7 @@
     border-radius: 2px;
     box-shadow: 2px 2px 0 rgba(0,0,0,.1);
     min-width: 125px;
-    z-index: 2;
+    z-index: 4;
     .favorite-item {
       &:hover {
         color: #fff;

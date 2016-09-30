@@ -2,13 +2,19 @@
   .file-tree {
     position: relative;
     overflow: scroll;
-    width: 200px;
+    width: 0px;
     border-right: 1px solid #989898;
+    transition: width 300ms ease;
     ul {
       width: 100%;
       margin-top: 31px;
     }
+    &.active {
+      width: 200px;
+    }
   }
+
+
   .tree-search {
     padding: 3px 2px;
     border-bottom: 1px solid #cccccc;
@@ -87,7 +93,7 @@
 </style>
 
 <template>
-  <div class="file-tree" v-show="mdDirectoryState">
+  <div class="file-tree" :class="{'active': mdDirectoryState}">
     <div class="tree-search">
       <span class="icon icon-search"></span>
       <input type="text" v-model="search">

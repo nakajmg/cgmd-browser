@@ -52,7 +52,9 @@
         OPEN(this.currentFilePath)
       },
       onToggleFavorite() {
-        this.toggleFavorite(this.currentFilePath)
+        if (this.currentFilePath) {
+          this.toggleFavorite(this.currentFilePath)
+        }
       },
       onTabsClose() {
         this.removeFilePaths(this.currentFilePath)

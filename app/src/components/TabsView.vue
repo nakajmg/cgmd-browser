@@ -9,7 +9,7 @@
     display: flex;
     padding: 10px 30px 0px 10px;
     align-items: flex-end;
-    flex-wrap: wrap;
+    /*flex-wrap: wrap;*/
   }
   .tab {
     text-align: center;

@@ -3,6 +3,7 @@
     flex-grow: 1;
     display: flex;
     position: relative;
+    z-index: 3;
   }
   .webview {
     flex-grow: 1;
@@ -99,7 +100,7 @@
         }
         this.$store.watch(currentFilePath, this.renderPreview)
         this.$refs.preview.addEventListener('console-message', this.onConsoleMessage)
-        this.$refs.preview.addEventListener('did-start-loading', this.$refs.preview.stop)
+        this.$refs.preview.addEventListener('did-start-loading', () => { this.$refs.preview.stop() })
         this.$refs.preview.addEventListener('will-navigate', this.openOnBrowser)
         this.$refs.preview.addEventListener('new-window', this.openOnBrowser)
         ipcRenderer.on('updateMarkdown', this.onUpdateMarkdown)
