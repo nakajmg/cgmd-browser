@@ -21,7 +21,8 @@
     },
     computed: {
       ...mapGetters({
-        currentFilePath: 'currentFilePath'
+        currentFilePath: 'currentFilePath',
+        mdDirectoryState: 'mdDirectoryState'
       })
     },
     methods: {
@@ -58,6 +59,9 @@
         })
         if (dirPaths) {
           this.setMdDirectory(dirPaths[0])
+          if (!this.mdDirectoryState) {
+            this.toggleMdDirectoryState()
+          }
         }
       },
       onOpenOnEditor() {

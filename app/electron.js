@@ -140,14 +140,14 @@ function createWindow () {
       submenu: [
         {
           label: 'Toggle Favorite',
-          accelerator: 'Cmd+Shift+B',
+          accelerator: 'Cmd+B',
           click() {
             mainWindow.webContents.send('cmd-toggle-favorite')
           }
         },
         {
           label: 'Toggle Favorite List',
-          accelerator: 'Cmd+B',
+          accelerator: 'Cmd+Shift+B',
           click() {
             mainWindow.webContents.send('cmd-toggle-favorite-list')
           }
@@ -170,7 +170,7 @@ function createWindow () {
       submenu: [
         {
           label: 'Set Directory',
-          accelerator: 'Cmd+Alt+D',
+          accelerator: 'Alt+D',
           click() {
             mainWindow.webContents.send('cmd-set-directory')
           }
