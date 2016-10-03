@@ -112,6 +112,8 @@
         <span class="icon icon-search"></span>
       </button>
       <button class="btn btn-default"
+        @click="toggleViewportState"
+        :class="{'active': viewportState}"
         title="表示サイズの変更">
         <span class="icon icon-mobile"></span>
       </button>
@@ -163,7 +165,8 @@
         favorite: 'favorite',
         searchState: 'searchState',
         mdDirectory: 'mdDirectory',
-        mdDirectoryState: 'mdDirectoryState'
+        mdDirectoryState: 'mdDirectoryState',
+        viewportState: 'viewportState'
       }),
       isNotCurrent() {
         return !this.currentFilePath
@@ -177,7 +180,8 @@
         addFilePaths: 'addFilePaths',
         toggleSearchState: 'toggleSearchState',
         setMdDirectory: 'setMdDirectory',
-        toggleMdDirectoryState: 'toggleMdDirectoryState'
+        toggleMdDirectoryState: 'toggleMdDirectoryState',
+        toggleViewportState: 'toggleViewportState'
       }),
       openFile() {
         const filePaths = remote.dialog.showOpenDialog({

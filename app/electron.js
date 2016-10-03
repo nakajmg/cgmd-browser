@@ -195,6 +195,13 @@ function createWindow () {
       label: 'Debug',
       submenu: [
         {
+          label: 'Toggle Viewport Resizer',
+          accelerator: 'Cmd+Shift+I',
+          click() {
+            mainWindow.webContents.send('cmd-toggle-viewport')
+          }
+        },
+        {
           label: 'Toggle Developer Tools',
           accelerator: (function() {
             if (process.platform === 'darwin') {

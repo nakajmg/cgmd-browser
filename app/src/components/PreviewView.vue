@@ -150,7 +150,9 @@
       <webview autosize="on" src="/static/webview.html" ref="preview" class="webview" id="preview"></webview>
     </div>
 
-    <div class="viewport-resizer" v-on:mouseleave="resetViewportDetail">
+    <div class="viewport-resizer"
+      v-on:mouseleave="resetViewportDetail"
+      v-if="viewportState">
       <div class="viewport-resizer__item"
         v-for="item in preset"
         @click="switchViewport(item)"
@@ -209,7 +211,8 @@
     computed: {
       ...mapGetters({
         searchState: 'searchState',
-        currentFilePath: 'currentFilePath'
+        currentFilePath: 'currentFilePath',
+        viewportState: 'viewportState'
       }),
       viewportStyle() {
         if (this.switchWidth === 0 || this.switchWidth === '0') {

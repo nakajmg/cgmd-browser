@@ -60,3 +60,7 @@ export const setMdDirectory = ({commit}, dirpath) => {
 export const toggleMdDirectoryState = ({commit}) => {
   commit(types.TOGGLE_MD_DIRECTORY_STATE)
 }
+
+export const toggleViewportState = ({commit}) => {
+  commit(types.TOGGLE_VIEWPORT_STATE)
+}

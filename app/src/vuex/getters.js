@@ -7,3 +7,4 @@ export const searchState = state => state.searchState
 export const searchWord = state => state.searchWord
 export const mdDirectory = state => state.mdDirectory
 export const mdDirectoryState = state => state.mdDirectoryState
+export const viewportState = state => state.viewportState

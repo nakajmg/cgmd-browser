@@ -8,7 +8,7 @@ import * as types from './mutation-types'
 Vue.use(Vuex)
 
 const pastState = window.localStorage.getItem('prevue-state')
-const state = pastState ? {...JSON.parse(pastState), wordCount: '-', previewHeight: '-', searchState: false} : {
+const state = pastState ? {...JSON.parse(pastState), wordCount: '-', previewHeight: '-', searchState: false, viewportState: false} : {
   currentFilePath: '',
   wordCount: '-',
   filePaths: [],
@@ -17,7 +17,8 @@ const state = pastState ? {...JSON.parse(pastState), wordCount: '-', previewHeig
   searchState: false,
   searchWord: '',
   mdDirectory: '',
-  mdDirectoryState: true
+  mdDirectoryState: true,
+  viewportState: false
 }
 
 const mutations = {
@@ -115,6 +116,10 @@ const mutations = {
 
   [types.TOGGLE_MD_DIRECTORY_STATE](state) {
     state.mdDirectoryState = !state.mdDirectoryState
+  },
+
+  [types.TOGGLE_VIEWPORT_STATE](state) {
+    state.viewportState = !state.viewportState
   }
 
 }
