@@ -1,14 +1,17 @@
-<style>
+<style lang="scss">
   .preview-item {
     flex-grow: 1;
     display: flex;
     position: relative;
+    justify-content: center;
+    align-items: center;
     z-index: 3;
     background-color: #ececec;
-    overflow: scroll;
+    /*overflow: scroll;*/
   }
   .webview {
     flex-grow: 1;
+    height: 100%;
   }
   .search-box {
     position: absolute;
@@ -64,19 +67,17 @@
   .viewport-resizer {
     position: absolute;
     width: 100%;
-    background-color: #222;
+    top: 0;
+    background-color: rgba(0,0,0,.8);
     box-shadow: 0 0 5px rgba(0,0,0,0.8);
   }
   .viewport {
     width: 100%;
+    height: 100%;
     display: flex;
     margin: auto;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
     box-shadow: rgb(193, 193, 193) 2px 2px 0px;
+    transition: all 100ms ease-out;
   }
 </style>
 
