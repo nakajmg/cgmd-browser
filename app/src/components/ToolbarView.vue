@@ -19,7 +19,7 @@
     border-top: 1px solid #989898;
     border-bottom: 1px solid #989898;
     /*flex-wrap: wrap;*/
-    min-width: 800px;
+    min-width: 820px;
     position: relative;
   }
   .btn-group {
@@ -110,6 +110,10 @@
         :class="{'active': searchState}"
         title="検索">
         <span class="icon icon-search"></span>
+      </button>
+      <button class="btn btn-default"
+        title="表示サイズの変更">
+        <span class="icon icon-mobile"></span>
       </button>
     </div>
 

@@ -9,10 +9,7 @@
     background-color: #ececec;
     /*overflow: scroll;*/
   }
-  .webview {
-    flex-grow: 1;
-    height: 100%;
-  }
+
   .search-box {
     position: absolute;
     top: -1px;
@@ -66,18 +63,83 @@
   }
   .viewport-resizer {
     position: absolute;
-    width: 100%;
-    top: 0;
-    background-color: rgba(0,0,0,.8);
-    box-shadow: 0 0 5px rgba(0,0,0,0.8);
+    top: 40px;
+    right: 36px;
+    background-color: #f6f6f6;
+    color: #333;
+    box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.1);
+    border: 1px solid #c2c0c2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .viewport-resizer__item {
+      border-top: 1px solid #ccc;
+      box-shadow: inset 0 1px 0 #fff;
+      &.active {
+        background-color: #333;
+        color: #f6f6f6;
+      }
+      &:first-of-type {
+        color: inherit;
+        background-color: inherit;
+        border: none;
+      }
+
+    }
+
+    .icon-viewport-auto_size {
+      display: flex;
+      cursor: pointer;
+      width: 38px;
+      height: 38px;
+      padding: 5px;
+      font-size: 24px;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-viewport-mobile {
+      @extend .icon-viewport-auto_size;
+      font-size: 16px;
+    }
+    .icon-viewport-iphone_se {
+      @extend .icon-viewport-auto_size;
+      font-size: 16px;
+    }
+    .icon-viewport-iphone_7 {
+      @extend .icon-viewport-auto_size;
+      font-size: 20px;
+    }
+    .icon-viewport-iphone_7_plus {
+      @extend .icon-viewport-auto_size;
+      font-size: 24px;
+    }
+    .icon-viewport-small_tablet {
+      @extend .icon-viewport-auto_size;
+      font-size: 22px;
+    }
+    .icon-viewport-ipad {
+      @extend .icon-viewport-auto_size;
+    }
+    .viewport-info {
+      display: flex;
+      font-size: 10px;
+      padding: 5px 0;
+      display: none;
+    }
   }
   .viewport {
     width: 100%;
     height: 100%;
     display: flex;
     margin: auto;
-    box-shadow: rgb(193, 193, 193) 2px 2px 0px;
     transition: all 100ms ease-out;
+  }
+  .webview {
+    flex-grow: 1;
+    height: 100%;
+    box-shadow: rgba(193, 193, 193, .5) 2px 2px 0px;
+    /*margin-top: 40px;*/
   }
 </style>
 
@@ -87,12 +149,29 @@
       :style="viewportStyle">
       <webview autosize="on" src="/static/webview.html" ref="preview" class="webview" id="preview"></webview>
     </div>
-    <div class="viewport-resizer">
-      <span class="icon icon-mobile"></span>
-      <select v-model="viewport">
-        <option v-for="item in preset" :value="`${item.width}x${item.height}`">{{item.name}}</option>
-      </select>
+
+    <div class="viewport-resizer" v-on:mouseleave="resetViewportDetail">
+      <div class="viewport-resizer__item"
+        v-for="item in preset"
+        @click="switchViewport(item)"
+        v-on:mouseenter="showViewportDetail(item)"
+        :class="{active: currentViewport.id === item.id}">
+        <span class="icon"
+          :title="item.name"
+          :class="[item.icon ? item.icon : 'icon-mobile', `icon-viewport-${item.id}`]"></span>
+      </div>
+      <div class="viewport-info">
+        <span v-if="hovered">
+          <p>{{hovered.name}}</p>
+          <p>{{hovered.width}}x{{hovered.height}}</p>
+        </span>
+        <span v-else>
+          <p>{{currentViewport.name}}</p>
+          <p>{{currentViewport.width}}x{{currentViewport.height}}</p>
+        </span>
+      </div>
     </div>
+
     <div class="search-box" v-show="searchState">
       <input type="text" class="search-input" autofocus ref="search">
       <span class="search-count"></span>
@@ -106,52 +185,25 @@
   import {currentFilePath, searchState} from '../vuex/getters'
   import {mapActions, mapGetters} from 'vuex'
   import ElectronSearchText from 'electron-search-text'
+  import preset from './viewport.json'
   export default{
     data() {
       return {
         regexpHeight: /offsetHeight\[([0-9]*)\]/,
         regexpScroll: /scroll\[([0-9]*)\]/,
         scroll: {},
-        switchWidth: '0',
-        switchHeight: '0',
+        switchWidth: 0,
+        switchHeight: 0,
         viewport: '0x0',
-        preset: [
-          {
-            name: 'None',
-            width: 0,
-            height: 0
-          },
-          {
-            name: 'Mobile',
-            width: 320,
-            height: 480
-          },
-          {
-            name: '5',
-            width: 320,
-            height: 568
-          },
-          {
-            name: '7',
-            width: 375,
-            height: 667
-          },
-          {
-            name: '7+',
-            width: 414,
-            height: 736
-          },
-          {
-            name: 'Small Tablet',
-            width: 600,
-            height: 800
-          },
-          {
-            name: 'iPad',
-            width: 768,
-            height: 1024
-          }
-        ]
+        preset: preset,
+        currentViewport: {
+          name: 'Auto Size',
+          width: 0,
+          height: 0,
+          icon: 'icon-resize-full',
+          id: 'auto_size'
+        },
+        hovered: null
       }
     },
     computed: {
@@ -166,9 +218,6 @@
         else {
           const width = `${this.switchWidth}px`
           const height = `${this.switchHeight}px`
-          console.log(this.$refs.outer.offsetHeight)
-          console.log(this.switchHeight)
-
           return { width, height }
         }
       },
@@ -286,6 +335,13 @@
       switchViewport(item) {
         this.switchWidth = item.width
         this.switchHeight = item.height
+        this.currentViewport = item
+      },
+      showViewportDetail(item) {
+        this.hovered = item
+      },
+      resetViewportDetail() {
+        this.hovered = null
       }
     }
   }

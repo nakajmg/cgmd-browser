@@ -1,0 +1,47 @@
+[
+  {
+    "name": "Auto Size",
+    "width": 0,
+    "height": 0,
+    "icon": "icon-resize-full",
+    "id": "auto_size"
+  },
+  {
+    "name": "Mobile (320x480)",
+    "width": 320,
+    "height": 480,
+    "id": "mobile"
+  },
+  {
+    "name": "iPhone SE (320x568)",
+    "width": 320,
+    "height": 568,
+    "id": "iphone_se"
+  },
+  {
+    "name": "iPhone 7 (375x667)",
+    "width": 375,
+    "height": 667,
+    "id": "iphone_7"
+  },
+  {
+    "name": "iPhone 7 Plus (414x736)",
+    "width": 414,
+    "height": 736,
+    "id": "iphone_7_plus"
+  },
+  {
+    "name": "Small Tablet (600x800)",
+    "width": 600,
+    "height": 800,
+    "icon": "icon-doc",
+    "id": "small_tablet"
+  },
+  {
+    "name": "iPad (768x1024)",
+    "width": 768,
+    "height": 1024,
+    "icon": "icon-doc",
+    "id": "ipad"
+  }
+]
