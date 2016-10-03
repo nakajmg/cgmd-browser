@@ -4,12 +4,13 @@
     display: flex;
     position: relative;
     z-index: 3;
+    background-color: #ececec;
+    overflow: scroll;
   }
   .webview {
     flex-grow: 1;
   }
   .search-box {
-    /*display: none;*/
     position: absolute;
     top: -1px;
     right: 35px;
@@ -60,16 +61,42 @@
     font-size: 15px;
     outline-width: 0;
   }
+  .viewport-resizer {
+    position: absolute;
+    width: 100%;
+    background-color: #222;
+    box-shadow: 0 0 5px rgba(0,0,0,0.8);
+  }
+  .viewport {
+    width: 100%;
+    display: flex;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    box-shadow: rgb(193, 193, 193) 2px 2px 0px;
+  }
 </style>
 
 <template>
-  <div class="preview-item">
+  <div class="preview-item" ref="outer">
+    <div class="viewport"
+      :style="viewportStyle">
+      <webview autosize="on" src="/static/webview.html" ref="preview" class="webview" id="preview"></webview>
+    </div>
+    <div class="viewport-resizer">
+      <span class="icon icon-mobile"></span>
+      <select v-model="viewport">
+        <option v-for="item in preset" :value="`${item.width}x${item.height}`">{{item.name}}</option>
+      </select>
+    </div>
     <div class="search-box" v-show="searchState">
       <input type="text" class="search-input" autofocus ref="search">
       <span class="search-count"></span>
       <button class="search-close" @click="closeSearchBox"><span class="icon icon-cancel"></span></button>
     </div>
-    <webview autosize="on" src="/static/webview.html" ref="preview" class="webview" id="preview"></webview>
   </div>
 </template>
 
@@ -83,14 +110,71 @@
       return {
         regexpHeight: /offsetHeight\[([0-9]*)\]/,
         regexpScroll: /scroll\[([0-9]*)\]/,
-        scroll: {}
+        scroll: {},
+        switchWidth: '0',
+        switchHeight: '0',
+        viewport: '0x0',
+        preset: [
+          {
+            name: 'None',
+            width: 0,
+            height: 0
+          },
+          {
+            name: 'Mobile',
+            width: 320,
+            height: 480
+          },
+          {
+            name: '5',
+            width: 320,
+            height: 568
+          },
+          {
+            name: '7',
+            width: 375,
+            height: 667
+          },
+          {
+            name: '7+',
+            width: 414,
+            height: 736
+          },
+          {
+            name: 'Small Tablet',
+            width: 600,
+            height: 800
+          },
+          {
+            name: 'iPad',
+            width: 768,
+            height: 1024
+          }
+        ]
       }
     },
     computed: {
       ...mapGetters({
         searchState: 'searchState',
         currentFilePath: 'currentFilePath'
-      })
+      }),
+      viewportStyle() {
+        if (this.switchWidth === 0 || this.switchWidth === '0') {
+          return {}
+        }
+        else {
+          const width = `${this.switchWidth}px`
+          const height = `${this.switchHeight}px`
+          console.log(this.$refs.outer.offsetHeight)
+          console.log(this.switchHeight)
+
+          return { width, height }
+        }
+      },
+      previewWidth() {
+        if (!this.$refs.preview) return 0
+        return this.$refs.preview.offsetWidth
+      }
     },
     mounted() {
       this.$refs.preview.addEventListener('did-finish-load', () => {
@@ -107,6 +191,10 @@
         ipcRenderer.on('attachFrameContent', this.onAttachFrameContent)
         ipcRenderer.on('attachExternalImage', this.onAttachExternalImage)
 //        this.$refs.preview.openDevTools()
+        this.$watch('viewport', (newVal, oldVal) => {
+          let [width, height] = newVal.split('x')
+          this.switchViewport({width, height})
+        })
       })
     },
     methods: {
@@ -193,6 +281,10 @@
             attachImage('${src}', '${data}')
           `)
         }
+      },
+      switchViewport(item) {
+        this.switchWidth = item.width
+        this.switchHeight = item.height
       }
     }
   }

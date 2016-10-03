@@ -1,8 +1,11 @@
 <style scoped lang="scss">
   .file-tree {
     position: relative;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: visible;
     width: 0px;
+    display: none;
+    flex-shrink: 0;
     border-right: 1px solid #989898;
     transition: width 300ms ease;
     ul {
@@ -10,10 +13,10 @@
       margin-top: 31px;
     }
     &.active {
+      display: block;
       width: 200px;
     }
   }
-
 
   .tree-search {
     padding: 3px 2px;
