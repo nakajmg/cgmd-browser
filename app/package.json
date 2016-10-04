@@ -1,6 +1,6 @@
 {
-  "name": "cgmd-prevue",
-  "version": "0.0.0",
+  "name": "cgmd-browser",
+  "version": "1.0.0",
   "description": "realtime markdown preview for cgmd-preview",
   "main": "electron.js",
   "dependencies": {
