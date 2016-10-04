@@ -147,7 +147,7 @@
   <div class="preview-item" ref="outer">
     <div class="viewport"
       :style="viewportStyle">
-      <webview autosize="on" src="/static/webview.html" ref="preview" class="webview" id="preview"></webview>
+      <webview autosize="on" src="static/webview.html" ref="preview" class="webview" id="preview"></webview>
     </div>
 
     <div class="viewport-resizer"

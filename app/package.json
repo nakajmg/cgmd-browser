@@ -4,6 +4,12 @@
   "description": "realtime markdown preview for cgmd-preview",
   "main": "electron.js",
   "dependencies": {
+    "axios": "^0.14.0",
+    "chokidar": "^1.6.0",
+    "codegrid-markdown": "^3.3.0",
+    "fs": "0.0.1-security",
+    "path": "^0.12.7",
+    "request": "^2.75.0",
     "vue": "next",
     "vue-electron": "^1.0.0",
     "vuex": "next"

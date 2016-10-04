@@ -21,7 +21,7 @@
     height: 100%;
   }
   .toolbar {
-    min-height: initial;
+    min-height: 79px;
   }
 </style>
 

@@ -14,7 +14,8 @@
     "lint:fix": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter --fix app",
     "pack": "cross-env NODE_ENV=production webpack -p --progress --colors",
     "postinstall": "npm run lint:fix && cd app && npm install",
-    "vuex:module": "node tasks/vuex/module.js"
+    "vuex:module": "node tasks/vuex/module.js",
+    "build-manual": "rm -rf builds/cgmd-preview && npm run pack && electron-packager ./app cgmd-browser --out=builds --platform=darwin --arch=x64 --overwrite=true"
   },
   "author": "Greg Holguin <simulatedgreg@gmail.com>",
   "license": "MIT",
@@ -64,6 +65,7 @@
     "directory-tree": "^1.1.1",
     "electron-search-text": "^0.3.0",
     "lodash": "^4.16.1",
-    "open": "0.0.5"
+    "open": "0.0.5",
+    "request": "^2.75.0"
   }
 }

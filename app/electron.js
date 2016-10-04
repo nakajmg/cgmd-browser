@@ -3,13 +3,11 @@ const request = require('request').defaults({ encoding: null });
 const path = require('path')
 const {app, BrowserWindow, ipcMain, Menu, dialog} = require('electron')
 const fs = require('fs')
-const _ = require('lodash')
 const CodegirdMarkdown = require('codegrid-markdown')
 const cgmd = new CodegirdMarkdown()
 const wordCounter = require('./src/wordCounter')
 const watcher = {}
 const chokidar = require('chokidar')
-const jade = require('jade')
 const axios = require('axios')
 let mainWindow
 let config = {}
@@ -226,12 +224,6 @@ function createWindow () {
     const extension = path.extname(filepath)
     const count = wordCounter(file)
 
-    if (extension === '.jade') {
-      const html = jade.render(file)
-      mainWindow.webContents.send(filepath, {md: html})
-      mainWindow.webContents.send(`${filepath}:count`, {count})
-      return
-    }
     const dirname = path.dirname(filepath)
     const replacedFile = file.replace(/\(\.\/(.*)\)/g, (rep, $1) => {
       let local = `${dirname}/${$1}`;

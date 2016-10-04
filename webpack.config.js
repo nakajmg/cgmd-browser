@@ -88,7 +88,7 @@ let config = {
   resolveLoader: {
     root: path.join(__dirname, 'node_modules')
   },
-  target: 'electron-renderer',
+  target: 'electron',
   vue: {
     autoprefixer: {
       browsers: ['last 2 Chrome versions']
