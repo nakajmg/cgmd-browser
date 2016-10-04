@@ -84,6 +84,13 @@ function createWindow () {
             mainWindow.webContents.send('cmd-toggle-search')
           }
         },
+        {
+          label: 'Reload',
+          accelerator: 'Cmd+R',
+          click() {
+            mainWindow.webContents.reload()
+          }
+        }
       ]
     },
     {
@@ -122,13 +129,6 @@ function createWindow () {
           accelerator: 'Ctrl+Shift+Tab',
           click() {
             mainWindow.webContents.send('cmd-tabs-move-left')
-          }
-        },
-        {
-          label: 'Reload',
-          accelerator: 'Cmd+R',
-          click() {
-            mainWindow.webContents.reload()
           }
         }
       ]

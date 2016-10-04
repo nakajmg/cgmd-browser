@@ -1,26 +1,50 @@
-# cgmd-prevue
+# cgmd-browser
 
-> realtime markdown preview for cgmd-preview
+> realtime markdown preview for cgmd-markdown
 
-## Build Setup
+## Shortcut Key
 
-``` bash
-# install dependencies
-npm install
+### Edit
 
-# serve with hot reload at localhost:9080
-npm run dev
+Command|Key 
+---|---
+Copy| Cmd+C
+Paste|Cmd+V
+Select All| Cmd+A
+Search|Cmd+F
 
-# build electron app for production
-npm run build
+### Tabs
 
-# lint all JS/Vue component files in `app/src`
-npm run lint
+Command|Key 
+---|---
+Add|Cmd+T
+Close|Cmd+W
+Open on Editor|Alt+O
+Move Right|Ctrl+Tab
+Move Left|Ctrl+Shift+Tab
+Reload|Ctrl+R
 
-# run webpack in production
-npm run pack
-```
-More information can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/docs/npm_scripts.html).
+### Favorite
+
+Command|Key 
+---|---
+Toggle Favorite|Cmd+B
+Toggle Favorite List|Cmd+Shift+B
+
+### Finder
+
+Command|Key 
+---|---
+Set Markdown Directory|Alt+D
+Toggle Finder|Cmd+Shift+D
+Search on Finder|Cmd+D
+
+### Debug
+
+Command|Key 
+---|---
+Toggle Viewport Resizer| Cmd+Shift+I
+Toggle Developer Tools|Cmd+Alt+I
 
 ---
 
