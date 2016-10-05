@@ -11,6 +11,7 @@ const chokidar = require('chokidar')
 const axios = require('axios')
 let mainWindow
 let config = {}
+const linter = require('./linter')
 
 if (process.env.NODE_ENV === 'development') {
   config = require('../config')
@@ -220,6 +221,10 @@ function createWindow () {
   Menu.setApplicationMenu(menu)
 
   function openMarkdown(filepath) {
+    linter(filepath)
+      .then(({results, filepath}) => {
+        console.log(results, filepath)
+      })
     const file = fs.readFileSync(filepath, 'utf8')
     const extension = path.extname(filepath)
     const count = wordCounter(file)

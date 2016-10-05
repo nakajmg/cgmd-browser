@@ -10,6 +10,8 @@
     "fs": "0.0.1-security",
     "path": "^0.12.7",
     "request": "^2.75.0",
+    "textlint": "6.3.0",
+    "textlint-rule-prh": "2.4.1",
     "vue": "next",
     "vue-electron": "^1.0.0",
     "vuex": "next"
