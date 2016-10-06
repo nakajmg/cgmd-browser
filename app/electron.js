@@ -221,9 +221,9 @@ function createWindow () {
   Menu.setApplicationMenu(menu)
 
   function openMarkdown(filepath) {
-    linter(filepath)
-      .then(({results, filepath}) => {
-        console.log(results, filepath)
+    linter(filepath, ['/path/to/cgmd-prevue/codegrid.yml'])
+      .then((results) => {
+        mainWindow.webContents.send('textlintResult', {results, filepath})
       })
     const file = fs.readFileSync(filepath, 'utf8')
     const extension = path.extname(filepath)

@@ -64,3 +64,7 @@ export const toggleMdDirectoryState = ({commit}) => {
 export const toggleViewportState = ({commit}) => {
   commit(types.TOGGLE_VIEWPORT_STATE)
 }
+
+export const toggleTextlintState = ({commit}) => {
+  commit(types.TOGGLE_TEXTLINT_STATE)
+}

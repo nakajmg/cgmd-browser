@@ -18,7 +18,8 @@ const state = pastState ? {...JSON.parse(pastState), wordCount: '-', previewHeig
   searchWord: '',
   mdDirectory: '',
   mdDirectoryState: true,
-  viewportState: false
+  viewportState: false,
+  textlintState: false
 }
 
 const mutations = {
@@ -120,6 +121,10 @@ const mutations = {
 
   [types.TOGGLE_VIEWPORT_STATE](state) {
     state.viewportState = !state.viewportState
+  },
+
+  [types.TOGGLE_TEXTLINT_STATE](state) {
+    state.textlintState = !state.textlintState
   }
 
 }

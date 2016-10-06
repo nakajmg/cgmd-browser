@@ -34,6 +34,7 @@
     <div class="preview">
       <filetree-view></filetree-view>
       <preview-view></preview-view>
+      <linter-view></linter-view>
     </div>
     <event-receiver></event-receiver>
     <!--<footer-view></footer-view>-->
@@ -47,6 +48,7 @@
   import PreviewView from 'components/PreviewView.vue'
   import FooterView from 'components/FooterView.vue'
   import FiletreeView from 'components/FiletreeView.vue'
+  import LinterView from 'components/LinterView.vue'
   import EventReceiver from 'components/EventReceiver.vue'
   import * as types from './vuex/mutation-types'
   import _ from 'lodash'
@@ -81,7 +83,8 @@
       ToolbarView,
       FooterView,
       EventReceiver,
-      FiletreeView
+      FiletreeView,
+      LinterView
     },
     store
   }

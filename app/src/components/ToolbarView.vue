@@ -19,7 +19,7 @@
     border-top: 1px solid #989898;
     border-bottom: 1px solid #989898;
     /*flex-wrap: wrap;*/
-    min-width: 820px;
+    min-width: 900px;
     position: relative;
   }
   .btn-group {
@@ -71,6 +71,20 @@
       }
     }
   }
+  .lint-count {
+    position: absolute;
+    width: 15px;
+    line-height: 15px;
+    background-color: tomato;
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    display: inline-block;
+    font-size: 9px;
+    top: -2px;
+    right: -2px;
+    box-shadow: -1px 1px 0 rgba(0,0,0,.1)
+  }
 </style>
 
 <template>
@@ -117,6 +131,13 @@
         title="表示サイズの変更">
         <span class="icon icon-mobile"></span>
       </button>
+      <button class="btn btn-default"
+        @click="toggleTextlintState"
+        :class="{'active': textlintState}"
+        title="textlintの結果を見る">
+        <span class="icon icon-eye"></span>
+        <span v-if="currentFilePath && lintCount" class="lint-count">{{lintCount}}</span>
+      </button>
     </div>
 
     <button class="btn btn-default"
@@ -124,6 +145,7 @@
       title="ヘルプを見る">
       <span class="icon icon-help-circled"></span>
     </button>
+
     <div class="favorite-list" v-show="isVisibleFavorite">
       <table class="table-striped">
         <thead>
@@ -142,6 +164,7 @@
         </tbody>
       </table>
     </div>
+
   </div>
 </template>
 
@@ -153,10 +176,12 @@
   import PATH from 'path'
   import OPEN from 'open'
   import {mapActions, mapGetters} from 'vuex'
+  import mediator from '../mediator'
   export default{
     data() {
       return {
-        isVisibleFavorite: false
+        isVisibleFavorite: false,
+        lintCount: 0
       }
     },
     computed: {
@@ -166,7 +191,8 @@
         searchState: 'searchState',
         mdDirectory: 'mdDirectory',
         mdDirectoryState: 'mdDirectoryState',
-        viewportState: 'viewportState'
+        viewportState: 'viewportState',
+        textlintState: 'textlintState'
       }),
       isNotCurrent() {
         return !this.currentFilePath
@@ -174,6 +200,9 @@
     },
     mounted() {
       ipcRenderer.on('cmd-toggle-favorite-list', this.toggleFavorite)
+      mediator.$on('lintCount', (count) => {
+        this.lintCount = count
+      })
     },
     methods: {
       ...mapActions({
@@ -181,7 +210,8 @@
         toggleSearchState: 'toggleSearchState',
         setMdDirectory: 'setMdDirectory',
         toggleMdDirectoryState: 'toggleMdDirectoryState',
-        toggleViewportState: 'toggleViewportState'
+        toggleViewportState: 'toggleViewportState',
+        toggleTextlintState: 'toggleTextlintState'
       }),
       openFile() {
         const filePaths = remote.dialog.showOpenDialog({
