@@ -63,7 +63,8 @@
     types.TABS_MOVE_RIGHT,
     types.SET_MD_DIRECTORY,
     types.SET_SEARCH_WORD,
-    types.TOGGLE_MD_DIRECTORY_STATE
+    types.TOGGLE_MD_DIRECTORY_STATE,
+    types.SET_TEXTLINT_DICTIONARY
   ]
 
   const save = _.debounce((state) => {

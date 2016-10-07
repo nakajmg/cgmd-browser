@@ -214,7 +214,8 @@
       ...mapGetters({
         searchState: 'searchState',
         currentFilePath: 'currentFilePath',
-        viewportState: 'viewportState'
+        viewportState: 'viewportState',
+        textlintDictionary: 'textlintDictionary'
       }),
       viewportStyle() {
         if (this.switchWidth === 0 || this.switchWidth === '0') {
@@ -245,7 +246,6 @@
         ipcRenderer.on('updateMarkdown', this.onUpdateMarkdown)
         ipcRenderer.on('attachFrameContent', this.onAttachFrameContent)
         ipcRenderer.on('attachExternalImage', this.onAttachExternalImage)
-//        this.$refs.preview.openDevTools()
         this.$watch('viewport', (newVal, oldVal) => {
           let [width, height] = newVal.split('x')
           this.switchViewport({width, height})
@@ -273,7 +273,7 @@
         ipcRenderer.once(`${current}:count`, (e, {count}) => {
           this.setWordCount(count)
         })
-        ipcRenderer.send('openMarkdown', current)
+        ipcRenderer.send('openMarkdown', current, this.textlintDictionary)
       },
       updatePreview(md) {
         let scroll = 0

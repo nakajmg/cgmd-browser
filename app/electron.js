@@ -227,11 +227,13 @@ function createWindow () {
   ])
   Menu.setApplicationMenu(menu)
 
-  function openMarkdown(filepath) {
-    linter(filepath, ['/path/to/cgmd-prevue/codegrid.yml'])
-      .then((results) => {
-        mainWindow.webContents.send('textlintResult', {results, filepath})
-      })
+  function openMarkdown(filepath, dicpath) {
+    if (dicpath) {
+      linter(filepath, [dicpath])
+        .then((results) => {
+          mainWindow.webContents.send('textlintResult', {results, filepath})
+        })
+    }
     const file = fs.readFileSync(filepath, 'utf8')
     const extension = path.extname(filepath)
     const count = wordCounter(file)
@@ -316,8 +318,8 @@ function createWindow () {
     })
   }
 
-  ipcMain.on('openMarkdown', (e, filepath) => {
-    openMarkdown(filepath)
+  ipcMain.on('openMarkdown', (e, filepath, dicpath) => {
+    openMarkdown(filepath, dicpath)
 
     if (!watcher[filepath]) {
       watcher[filepath] = chokidar.watch(filepath, {

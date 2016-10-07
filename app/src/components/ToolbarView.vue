@@ -85,13 +85,55 @@
     right: -2px;
     box-shadow: -1px 1px 0 rgba(0,0,0,.1)
   }
+
+  .dialog {
+    margin: auto;
+    width: 500px;
+    border: 1px solid #4ea0ff;
+    padding-bottom: 10px;
+    border-radius: 2px;
+    .dialog-header {
+      background-color: #4ea0ff;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      padding: 5px 15px 5px 7px;
+      .text {
+        padding-left: 5px;
+        flex-grow: 1;
+      }
+      .icon-cancel {
+        cursor: pointer;
+      }
+    }
+    .dialog-item {
+      padding: 10px 5px 0 1px;
+      display: flex;
+      align-items: center;
+      .icon {
+        width: 20px;
+        text-align: center;
+        color: #585858;
+        padding-left: 5px;
+      }
+      .input {
+        flex-grow: 1;
+        margin-right: 5px;
+        margin-left: 5px;
+        opacity: 1;
+        border: 1px solid #d0d0d0;
+        border-radius: 2px;
+        padding: 1px 5px;
+      }
+    }
+  }
 </style>
 
 <template>
   <div class="header-toolbar">
     <div class="btn-group">
       <button class="btn btn-default"
-        @click="openFolder"
+        @click="openSetting"
         title="フォルダを開く">
         <span class="icon icon-cog"></span>
       </button>
@@ -165,6 +207,24 @@
       </table>
     </div>
 
+    <dialog ref="dialog" class="dialog">
+      <div class="dialog-header">
+        <span class="icon icon-cog"></span>
+        <span class="text">Settings</span>
+        <span class="icon icon-cancel" @click="closeSetting"></span>
+      </div>
+      <div class="dialog-item">
+        <span class="icon icon-folder"></span>
+        <input class="input" disabled :value="mdDirectory">
+        <button @click="setDirectory" class="btn btn-default" title="ディレクトリを開く">...</button>
+      </div>
+      <div class="dialog-item">
+        <span class="icon icon-book"></span>
+        <input class="input" disabled :value="textlintDictionary">
+        <button @click="setDictionary" class="btn btn-default" title="辞書を開く">...</button>
+      </div>
+    </dialog>
+
   </div>
 </template>
 
@@ -181,7 +241,8 @@
     data() {
       return {
         isVisibleFavorite: false,
-        lintCount: 0
+        lintCount: 0,
+        stateSetting: false
       }
     },
     computed: {
@@ -192,7 +253,8 @@
         mdDirectory: 'mdDirectory',
         mdDirectoryState: 'mdDirectoryState',
         viewportState: 'viewportState',
-        textlintState: 'textlintState'
+        textlintState: 'textlintState',
+        textlintDictionary: 'textlintDictionary'
       }),
       isNotCurrent() {
         return !this.currentFilePath
@@ -211,7 +273,8 @@
         setMdDirectory: 'setMdDirectory',
         toggleMdDirectoryState: 'toggleMdDirectoryState',
         toggleViewportState: 'toggleViewportState',
-        toggleTextlintState: 'toggleTextlintState'
+        toggleTextlintState: 'toggleTextlintState',
+        setTextlintDictionary: 'setTextlintDictionary'
       }),
       openFile() {
         const filePaths = remote.dialog.showOpenDialog({
@@ -253,6 +316,31 @@
             this.toggleMdDirectoryState()
           }
         }
+      },
+      setDirectory() {
+        const dirPaths = remote.dialog.showOpenDialog({
+          properties: ['openDirectory']
+        })
+        if (dirPaths) {
+          this.setMdDirectory(dirPaths[0])
+        }
+      },
+      setDictionary() {
+        const filePaths = remote.dialog.showOpenDialog({
+          properties: ['openFile'],
+          filters: [
+            {name: 'YAML', extensions: ['yml']}
+          ]
+        })
+        if (filePaths) {
+          this.setTextlintDictionary(filePaths[0])
+        }
+      },
+      openSetting() {
+        this.$refs.dialog.showModal()
+      },
+      closeSetting() {
+        this.$refs.dialog.close()
       }
     },
     components: {
