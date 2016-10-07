@@ -71,7 +71,7 @@
   }
   .lint-results-info {
     padding-left: 2px;
-    border-top: 1px dashed #ababab;
+    border-top: 1px dashed #ccc;
     &:nth-of-type(2n) {
       background-color: #f9f9f9;
     }
@@ -90,8 +90,9 @@
   <div class="lint-items" v-show="textlintState">
     <div class="lint-item"
       v-for="(result, key) in results"
-      v-if="currentFilePath">
-      <input type="checkbox" :id="key" class="lint-item-toggle">
+      v-if="currentFilePath"
+      :key="key">
+      <input type="checkbox" :id="key" class="lint-item-toggle" @click="highlight" ref="check">
       <label :for="key" class="lint-item-heading">
         <span class="count">{{result.length}}</span>
         <span class="key">{{key}}</span>
@@ -135,10 +136,22 @@
           arranged[key] || (arranged[key] = [])
           arranged[key].push({line, column})
         })
+        this.results = []
         this.results = arranged
         mediator.$emit('lintCount', results.messages.length)
         // filepathがcurrentFilePathと異なる場合は [] をセットしてクリア
       })
+    },
+    methods: {
+      highlight() {
+        const keys = this.$refs.check.reduce((ret, el) => {
+          if (el.checked) {
+            ret.push(el.id.split('/')[0])
+          }
+          return ret
+        }, [])
+        mediator.$emit('highlightWebview', keys.join(' '))
+      }
     }
   }
 </script>

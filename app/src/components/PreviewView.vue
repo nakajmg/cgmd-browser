@@ -187,6 +187,7 @@
   import {currentFilePath, searchState} from '../vuex/getters'
   import {mapActions, mapGetters} from 'vuex'
   import ElectronSearchText from 'electron-search-text'
+  import mediator from '../mediator'
   import preset from './viewport.json'
   export default{
     data() {
@@ -249,6 +250,8 @@
           let [width, height] = newVal.split('x')
           this.switchViewport({width, height})
         })
+
+        mediator.$on('highlightWebview', this.highlightWords)
       })
     },
     methods: {
@@ -296,11 +299,14 @@
         if (message && this.regexpHeight.test(message)) {
           let height = message.replace(this.regexpHeight, '$1')
           this.updateHeight(height)
+          return
         }
         if (message && this.regexpScroll.test(message)) {
           let scroll = message.replace(this.regexpScroll, '$1')
           this.setScroll(scroll)
+          return
         }
+        console.log(message)
       },
       updateHeight(height) {
         this.setPreviewHeight(height)
@@ -346,6 +352,9 @@
       },
       resetViewportDetail() {
         this.hovered = null
+      },
+      highlightWords(keywords) {
+        this.$refs.preview.executeJavaScript(`mark('${keywords}')`)
       }
     }
   }

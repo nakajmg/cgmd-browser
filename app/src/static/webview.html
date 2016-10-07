@@ -4,6 +4,12 @@
   <meta charset="UTF-8">
   <title>preview</title>
   <link rel="stylesheet" href="http://ui.codegrid.net/assets2/css/codegrid-ui.min.css">
+  <style>
+    mark{
+      background: tomato;
+      color: black;
+    }
+  </style>
 </head>
 <body>
   <div class="CG2-narrowLayout">
@@ -14,6 +20,7 @@
   </div>
   <script src="http://ui.codegrid.net/assets2/js/codegrid-ui.min.js"></script>
   <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.4.0/jquery.mark.min.js"></script>
   <script>
 
     /*
@@ -31,8 +38,8 @@
       $article.innerHTML = unescape(md)
 
       Prism.highlightAll(false, () => {
-        console.log(`offsetHeight[${document.body.offsetHeight}]`)
         $(window).scrollTop(scroll)
+        onResize()
       })
     }
 
@@ -67,6 +74,7 @@
           iframe.contentWindow.document.open()
           iframe.contentWindow.document.close()
           iframe.contentWindow.document.write(unescape(html))
+          onResize()
           return
         }
       })
@@ -74,6 +82,7 @@
 
     function attachImage(src, data) {
       $(`img[src="${src}"]`).attr('src', data)
+      onResize()
     }
 
     const onScroll = $.debounce(300, () => {
@@ -85,6 +94,10 @@
 
     $(window).on('resize', onResize)
     $(window).on('scroll', onScroll)
+
+    function mark(keywords) {
+      $($article).unmark().mark(keywords)
+    }
   </script>
 </body>
 </html>
