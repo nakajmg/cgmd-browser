@@ -19,6 +19,7 @@
       ipcRenderer.on('cmd-set-directory', this.onSetDirectory)
       ipcRenderer.on('cmd-toggle-directory', this.toggleMdDirectoryState)
       ipcRenderer.on('cmd-toggle-viewport', this.toggleViewportState)
+      ipcRenderer.on('cmd-toggle-textlint', this.toggleTextlintState)
     },
     computed: {
       ...mapGetters({
@@ -40,7 +41,8 @@
         toggleSearchState: 'toggleSearchState',
         setMdDirectory: 'setMdDirectory',
         toggleMdDirectoryState: 'toggleMdDirectoryState',
-        toggleViewportState: 'toggleViewportState'
+        toggleViewportState: 'toggleViewportState',
+        toggleTextlintState: 'toggleTextlintState'
       }),
       onOpenFile() {
         const filePaths = remote.dialog.showOpenDialog({

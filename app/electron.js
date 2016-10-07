@@ -214,6 +214,13 @@ function createWindow () {
             if (focusedWindow)
               focusedWindow.webContents.toggleDevTools()
           }
+        },
+        {
+          label: 'Toggle Textlint Reporter',
+          accelerator: 'Cmd+Shift+T',
+          click() {
+            mainWindow.webContents.send('cmd-toggle-textlint')
+          }
         }
       ]
     }

@@ -43,6 +43,7 @@ Search on Finder|Cmd+D
 
 Command|Key 
 ---|---
+Toggle Textlint Reporter| Cmd+Shift+T
 Toggle Viewport Resizer| Cmd+Shift+I
 Toggle Developer Tools|Cmd+Alt+I
 
