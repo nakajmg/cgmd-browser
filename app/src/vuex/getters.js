@@ -9,3 +9,4 @@ export const mdDirectory = state => state.mdDirectory
 export const mdDirectoryState = state => state.mdDirectoryState
 export const viewportState = state => state.viewportState
 export const textlintState = state => state.textlintState
+export const textlintDictionary = state => state.textlintDictionary

@@ -68,3 +68,7 @@ export const toggleViewportState = ({commit}) => {
 export const toggleTextlintState = ({commit}) => {
   commit(types.TOGGLE_TEXTLINT_STATE)
 }
+
+export const setTextlintDictionary = ({commit}, filepath) => {
+  commit(types.SET_TEXTLINT_DICTIONARY, filepath)
+}
