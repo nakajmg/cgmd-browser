@@ -177,7 +177,7 @@
         @click="toggleTextlintState"
         :class="{'active': textlintState}"
         title="textlintの結果を見る">
-        <span class="icon icon-eye"></span>
+        <span class="icon icon-book"></span>
         <span v-if="currentFilePath && lintCount" class="lint-count">{{lintCount}}</span>
       </button>
     </div>
