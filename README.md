@@ -2,6 +2,8 @@
 
 > realtime markdown preview for cgmd-markdown
 
+![ss](./ss.png)
+
 ## Shortcut Key
 
 ### Edit
