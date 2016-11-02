@@ -96,7 +96,24 @@
     $(window).on('scroll', onScroll)
 
     function mark(keywords) {
-      $($article).unmark().mark(keywords)
+      if (keywords === '') {
+        $($article).unmark()
+        return
+      }
+      var arr = keywords.split(',')
+      var regs = arr.map((word) => {
+        var [actual, expect] = word.split('/')
+        if (expect.includes(actual)) {
+          return new RegExp(`${actual}(?!${expect.substring(actual.length)})`)
+        }
+        else {
+          return new RegExp(actual)
+        }
+      })
+      $($article).unmark()
+      regs.forEach((reg) => {
+        $($article).markRegExp(reg)
+      })
     }
 
     function jumpMarkedWord(word, index) {
@@ -105,7 +122,7 @@
         if (el.textContent === word) {
           if (count === index) {
             count++
-            var position = $(el).position().top
+            var position = $(el).position().top - 10
             $(window).scrollTop(position)
             return false
           }
