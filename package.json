@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "cgmd-prevue",
   "version": "0.0.0",
   "description": "realtime markdown preview for cgmd-preview",
@@ -17,7 +18,7 @@
     "vuex:module": "node tasks/vuex/module.js",
     "build-manual": "rm -rf builds/cgmd-preview && npm run pack && electron-packager ./app cgmd-browser --out=builds --platform=darwin --arch=x64 --overwrite=true"
   },
-  "author": "Greg Holguin <simulatedgreg@gmail.com>",
+  "author": "nakajmg",
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.8.0",

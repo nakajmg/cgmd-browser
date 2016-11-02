@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "cgmd-browser",
   "version": "1.2.0",
   "description": "realtime markdown preview for cgmd-preview",
