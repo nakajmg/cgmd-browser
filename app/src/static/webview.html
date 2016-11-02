@@ -98,6 +98,23 @@
     function mark(keywords) {
       $($article).unmark().mark(keywords)
     }
+
+    function jumpMarkedWord(word, index) {
+      var count = 0
+      $($article).find('[data-markjs]').each((i, el) => {
+        if (el.textContent === word) {
+          if (count === index) {
+            count++
+            var position = $(el).position().top
+            $(window).scrollTop(position)
+            return false
+          }
+          else {
+            count++
+          }
+        }
+      })
+    }
   </script>
 </body>
 </html>

@@ -102,7 +102,7 @@
         </span>
       </label>
       <div class="lint-results">
-        <p v-for="info in result" class="lint-results-info">
+        <p v-for="(info, index) in result" class="lint-results-info" @click="jumpMarkedWord(key, index)">
           <span class="lint-results-info-text">{{info.line}}</span>:
           <span class="lint-results-info-text">{{info.column}}</span>
         </p>
@@ -151,6 +151,10 @@
           return ret
         }, [])
         mediator.$emit('highlightWebview', keys.join(' '))
+      },
+      jumpMarkedWord(key, index) {
+        const [word] = key.split('/')
+        mediator.$emit('jumpMarkedWord', {word, index})
       }
     }
   }
