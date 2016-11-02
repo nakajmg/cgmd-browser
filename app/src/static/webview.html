@@ -122,7 +122,7 @@
         if (el.textContent === word) {
           if (count === index) {
             count++
-            var position = $(el).position().top
+            var position = $(el).position().top - 10
             $(window).scrollTop(position)
             return false
           }

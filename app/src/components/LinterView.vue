@@ -78,8 +78,13 @@
   .lint-results-info {
     padding-left: 2px;
     border-top: 1px dashed #ccc;
+    cursor: pointer;
     &:nth-of-type(2n) {
       background-color: #f9f9f9;
+    }
+    &:hover {
+      background-color: #79b7ff;
+      color: #fff;
     }
   }
   .lint-results-info-text {
