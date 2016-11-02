@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "cgmd-browser",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "realtime markdown preview for cgmd-preview",
   "main": "electron.js",
   "dependencies": {
