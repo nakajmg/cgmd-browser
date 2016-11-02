@@ -258,22 +258,33 @@
       ...mapActions({
         setPreviewHeight: 'setPreviewHeight',
         setWordCount: 'setWordCount',
-        setSearchState: 'setSearchState'
+        setSearchState: 'setSearchState',
+        removeFilePaths: 'removeFilePaths'
       }),
       renderPreview(current) {
         if (!current) {
-          this.updateHeight('-')
-          this.setWordCount('-')
-          this.updatePreview('')
-          return
+          return this._resetPreview()
         }
-        ipcRenderer.once(current, (e, {md}) => {
-          this.updatePreview(md)
-        })
-        ipcRenderer.once(`${current}:count`, (e, {count}) => {
-          this.setWordCount(count)
-        })
+
+        ipcRenderer.once(current, this._onUpdatePreview)
+        ipcRenderer.once(`${current}:count`, this._onUpdateCount)
         ipcRenderer.send('openMarkdown', current, this.textlintDictionary)
+      },
+      _resetPreview() {
+        this.updateHeight('-')
+        this.setWordCount('-')
+        this.updatePreview('')
+        return
+      },
+      _onUpdatePreview(e, {md, err, filepath}) {
+        if (err) {
+          ipcRenderer.removeListener(`${filepath}:count`, this._onUpdateCount)
+          return this.removeFilePaths(filepath)
+        }
+        this.updatePreview(md)
+      },
+      _onUpdateCount(e, {count}) {
+        this.setWordCount(count)
       },
       updatePreview(md) {
         let scroll = 0
