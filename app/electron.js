@@ -249,7 +249,7 @@ function createWindow () {
         let local = `${dirname}/${$2}`;
         try {
           let img = fs.readFileSync(local)
-          return `(data:image/png;base64,${new Buffer(img).toString('base64')})`
+          return `![${$1}](data:image/png;base64,${new Buffer(img).toString('base64')})`
         }
         catch(err) {
           // ファイルが読み込めなかったらそのまま返す
