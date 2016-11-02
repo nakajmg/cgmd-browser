@@ -252,6 +252,7 @@
         })
 
         mediator.$on('highlightWebview', this.highlightWords)
+        mediator.$on('jumpMarkedWord', this.jumpMarkedWord)
       })
     },
     methods: {
@@ -366,6 +367,9 @@
       },
       highlightWords(keywords) {
         this.$refs.preview.executeJavaScript(`mark('${keywords}')`)
+      },
+      jumpMarkedWord({word, index}) {
+        this.$refs.preview.executeJavaScript(`jumpMarkedWord('${word}', ${index})`)
       }
     }
   }
