@@ -26,6 +26,12 @@
       cursor: pointer;
       flex-grow: 1;
       font-size: 12px;
+      .actual {
+        color: tomato;
+      }
+      .expect {
+        color: #2fd82f;
+      }
     }
     .count {
       cursor: pointer;
@@ -95,7 +101,10 @@
       <input type="checkbox" :id="key" class="lint-item-toggle" @click="highlight" ref="check">
       <label :for="key" class="lint-item-heading">
         <span class="count">{{result.length}}</span>
-        <span class="key">{{key}}</span>
+        <span class="key">
+          <span class="actual">{{key.split('/')[0]}}</span> /
+          <span class="expect">{{key.split('/')[1]}}</span>
+        </span>
         <span class="expand">
           <span class="icon icon-down-open"></span>
           <span class="icon icon-up-open"></span>
