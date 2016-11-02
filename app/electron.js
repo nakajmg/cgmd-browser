@@ -228,93 +228,99 @@ function createWindow () {
   Menu.setApplicationMenu(menu)
 
   function openMarkdown(filepath, dicpath) {
-    if (dicpath) {
-      linter(filepath, [dicpath])
-        .then((results) => {
-          mainWindow.webContents.send('textlintResult', {results, filepath})
-        })
-    }
-    const file = fs.readFileSync(filepath, 'utf8')
-    const extension = path.extname(filepath)
-    const count = wordCounter(file)
+    fs.readFile(filepath, 'utf8', (err, file) => {
+      if (err) {
+        mainWindow.webContents.send(filepath, {err, filepath})
+        return
+      }
 
-    const dirname = path.dirname(filepath)
-    const replacedFile = file.replace(/\(\.\/(.*)\)/g, (rep, $1) => {
-      let local = `${dirname}/${$1}`;
-      let img = fs.readFileSync(local)
-      return `(data:image/png;base64,${new Buffer(img).toString('base64')})`
-    })
-    const urls = []
-    replacedFile.replace(/<iframe.*(data-)?src="(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*))".*<\/iframe>/g, (rep, $1, $2) => {
-      urls.push($2)
-      return rep
-    })
-
-    const md = cgmd.render(replacedFile)
-    mainWindow.webContents.send(filepath, {md})
-    mainWindow.webContents.send(`${filepath}:count`, {count})
-
-    const externalImages = []
-    md.replace(/<img.*?src="(https?:\/\/.*?)".*?>/g, (rep, $1) => {
-      externalImages.push($1)
-      return rep
-    })
-
-    externalImages.forEach((src) => {
-      request.get(`${src}`, (err, response, body) => {
-        if (err) return
-        const data = "data:" + response.headers["content-type"] + ";base64," + new Buffer(body).toString('base64');
-        
-        mainWindow.webContents.send('attachExternalImage', {filepath, src, data})
-      })
-    })
-    
-    // ローカルじゃない画像を取得してhtmlに埋め込む処理
-    urls.forEach((url) => {
-      axios.get(url)
-        .then((res) => {
-          const dir = path.dirname(url)
-          const images = []
-          res.data.replace(/<img.*?src="(.*)".*?\/>/g, (rep, $1) => {
-            images.push(`${$1}`)
-            return rep
+      if (dicpath) {
+        linter(filepath, [dicpath])
+          .then((results) => {
+            mainWindow.webContents.send('textlintResult', {results, filepath})
           })
+      }
+      const extension = path.extname(filepath)
+      const count = wordCounter(file)
 
-          const html = res.data
+      const dirname = path.dirname(filepath)
+      const replacedFile = file.replace(/\(\.\/(.*)\)/g, (rep, $1) => {
+        let local = `${dirname}/${$1}`;
+        let img = fs.readFileSync(local)
+        return `(data:image/png;base64,${new Buffer(img).toString('base64')})`
+      })
+      const urls = []
+      replacedFile.replace(/<iframe.*(data-)?src="(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*))".*<\/iframe>/g, (rep, $1, $2) => {
+        urls.push($2)
+        return rep
+      })
 
-          // iframe内の画像をdarauriに変換して埋め込む
-          const promises = images.map((src) => {
-            return new Promise(function(resolve, reject) {
-              request.get(`${dir}${path.sep}${src}`, (err, response, body) => {
-                if (err) reject(err)
-                const data = "data:" + response.headers["content-type"] + ";base64," + new Buffer(body).toString('base64');
-                resolve({src, data})
-              })
+      const md = cgmd.render(replacedFile)
+      mainWindow.webContents.send(filepath, {md, filepath})
+      mainWindow.webContents.send(`${filepath}:count`, {count})
+
+      const externalImages = []
+      md.replace(/<img.*?src="(https?:\/\/.*?)".*?>/g, (rep, $1) => {
+        externalImages.push($1)
+        return rep
+      })
+
+      externalImages.forEach((src) => {
+        request.get(`${src}`, (err, response, body) => {
+          if (err) return
+          const data = "data:" + response.headers["content-type"] + ";base64," + new Buffer(body).toString('base64');
+
+          mainWindow.webContents.send('attachExternalImage', {filepath, src, data})
+        })
+      })
+
+      // ローカルじゃない画像を取得してhtmlに埋め込む処理
+      urls.forEach((url) => {
+        axios.get(url)
+          .then((res) => {
+            const dir = path.dirname(url)
+            const images = []
+            res.data.replace(/<img.*?src="(.*)".*?\/>/g, (rep, $1) => {
+              images.push(`${$1}`)
+              return rep
             })
 
-          })
+            const html = res.data
 
-          Promise.all(promises)
-            .then((ress) => {
-              let replaced = html
-              ress.forEach((res) => {
-                let regex = new RegExp(`<img.*src="${res.src}".*\/>`)
-
-                replaced = replaced.replace(regex, (rep) => {
-                  return `<img src="${res.data}" />`
+            // iframe内の画像をdarauriに変換して埋め込む
+            const promises = images.map((src) => {
+              return new Promise(function(resolve, reject) {
+                request.get(`${dir}${path.sep}${src}`, (err, response, body) => {
+                  if (err) reject(err)
+                  const data = "data:" + response.headers["content-type"] + ";base64," + new Buffer(body).toString('base64');
+                  resolve({src, data})
                 })
               })
 
-              mainWindow.webContents.send('attachFrameContent', { filepath ,url, html: replaced })
-
-            }, (err) => {
-              console.log('fail')
-              console.log(err)
             })
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+
+            Promise.all(promises)
+              .then((ress) => {
+                let replaced = html
+                ress.forEach((res) => {
+                  let regex = new RegExp(`<img.*src="${res.src}".*\/>`)
+
+                  replaced = replaced.replace(regex, (rep) => {
+                    return `<img src="${res.data}" />`
+                  })
+                })
+
+                mainWindow.webContents.send('attachFrameContent', { filepath ,url, html: replaced })
+
+              }, (err) => {
+                console.log('fail')
+                console.log(err)
+              })
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      })
     })
   }
 
@@ -337,8 +343,6 @@ function createWindow () {
       watcher[filepath] = null
     }
   })
-
-  console.log('mainWindow opened')
 }
 
 app.on('ready', createWindow)
