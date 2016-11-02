@@ -240,15 +240,24 @@ function createWindow () {
             mainWindow.webContents.send('textlintResult', {results, filepath})
           })
       }
-      const extension = path.extname(filepath)
+//      const extension = path.extname(filepath)
       const count = wordCounter(file)
 
       const dirname = path.dirname(filepath)
-      const replacedFile = file.replace(/\(\.\/(.*)\)/g, (rep, $1) => {
-        let local = `${dirname}/${$1}`;
-        let img = fs.readFileSync(local)
-        return `(data:image/png;base64,${new Buffer(img).toString('base64')})`
+      // ローカルの画像を読み込んでbase64で埋め込む
+      const replacedFile = file.replace(/!\[(.*?)\]\(\.\/(.*)\)/g, (rep, $1, $2) => {
+        let local = `${dirname}/${$2}`;
+        try {
+          let img = fs.readFileSync(local)
+          return `(data:image/png;base64,${new Buffer(img).toString('base64')})`
+        }
+        catch(err) {
+          // ファイルが読み込めなかったらそのまま返す
+          return `![${$1}](./${$2})`
+        }
       })
+
+      // iframe の src を収集
       const urls = []
       replacedFile.replace(/<iframe.*(data-)?src="(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*))".*<\/iframe>/g, (rep, $1, $2) => {
         urls.push($2)
@@ -260,11 +269,13 @@ function createWindow () {
       mainWindow.webContents.send(`${filepath}:count`, {count})
 
       const externalImages = []
+
       md.replace(/<img.*?src="(https?:\/\/.*?)".*?>/g, (rep, $1) => {
         externalImages.push($1)
         return rep
       })
 
+      // 外部URLの画像をリクエストしてbase64で埋め込む
       externalImages.forEach((src) => {
         request.get(`${src}`, (err, response, body) => {
           if (err) return
@@ -274,7 +285,7 @@ function createWindow () {
         })
       })
 
-      // ローカルじゃない画像を取得してhtmlに埋め込む処理
+      // ifame の src をリクエスト
       urls.forEach((url) => {
         axios.get(url)
           .then((res) => {
