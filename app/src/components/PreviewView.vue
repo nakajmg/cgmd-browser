@@ -234,6 +234,7 @@
     },
     mounted() {
       this.$refs.preview.addEventListener('did-finish-load', () => {
+        this.$refs.preview.openDevTools()
         this.initSearchBox()
         if (this.currentFilePath) {
           this.renderPreview(this.currentFilePath)

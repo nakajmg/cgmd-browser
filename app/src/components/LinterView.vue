@@ -146,11 +146,11 @@
       highlight() {
         const keys = this.$refs.check.reduce((ret, el) => {
           if (el.checked) {
-            ret.push(el.id.split('/')[0])
+            ret.push(el.id)
           }
           return ret
         }, [])
-        mediator.$emit('highlightWebview', keys.join(' '))
+        mediator.$emit('highlightWebview', keys)
       },
       jumpMarkedWord(key, index) {
         const [word] = key.split('/')
