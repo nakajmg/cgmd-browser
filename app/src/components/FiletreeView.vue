@@ -18,6 +18,15 @@
     }
   }
 
+  // .viewport width + .file-tree width
+  @media screen and (max-width: 856px) {
+    .file-tree.active {
+      &.active {
+        display: none;
+      }
+    }
+  }
+
   .tree-search {
     padding: 3px 2px;
     border-bottom: 1px solid #cccccc;

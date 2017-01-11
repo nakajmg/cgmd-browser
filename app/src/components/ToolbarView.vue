@@ -19,10 +19,10 @@
     border-top: 1px solid #989898;
     border-bottom: 1px solid #989898;
     /*flex-wrap: wrap;*/
-    min-width: 900px;
     position: relative;
   }
   .btn-group {
+    display: flex; /* Overwrite for photon.css */
     margin: 0 5px 0 6px;
   }
   .btn {
@@ -350,4 +350,3 @@
     }
   }
 </script>
-
