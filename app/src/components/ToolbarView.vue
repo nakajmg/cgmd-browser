@@ -22,7 +22,7 @@
     position: relative;
   }
   .btn-group {
-    display: flex; /* Overwrite for photon.css */
+    display: flex; // Overwrite for photon.css
     margin: 0 5px 0 6px;
   }
   .btn {
