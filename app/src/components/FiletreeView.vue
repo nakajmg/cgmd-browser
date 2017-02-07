@@ -85,7 +85,6 @@
     .tree-file-text {
       white-space: nowrap;
       width: 170px;
-      overflow: scroll;
     }
   }
   .tree-epmty {
