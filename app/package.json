@@ -13,9 +13,9 @@
     "request": "^2.75.0",
     "textlint": "^7.1.1",
     "textlint-rule-prh": "^3.1.1",
-    "vue": "next",
+    "vue": "^2.0.0",
     "vue-electron": "^1.0.0",
-    "vuex": "next"
+    "vuex": "^2.0.0"
   },
   "devDependencies": {},
   "author": "nakajmg <nakajima.jmg@gmail.com>"
