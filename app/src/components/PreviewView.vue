@@ -136,8 +136,8 @@
     transition: all 100ms ease-out;
   }
   .webview {
+    display:inline-flex;
     flex-grow: 1;
-    height: 100%;
     /*box-shadow: rgba(193, 193, 193, .5) 2px 2px 0px;*/
     /*margin-top: 40px;*/
   }

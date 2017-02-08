@@ -49,6 +49,18 @@ Toggle Textlint Reporter| Cmd+Shift+T
 Toggle Viewport Resizer| Cmd+Shift+I
 Toggle Developer Tools|Cmd+Alt+I
 
+
+## Development
+
+Install and run `dev` npm-run-scripts.
+
+```
+npm install
+# postinstall: cd app && npm install
+npm run dev
+# start electron app
+```
+
 ---
 
 This project was generated from [electron-vue](https://github.com/SimulatedGREG/electron-vue) using [vue-cli](https://github.com/vuejs/vue-cli). Documentation about this project can be found [here](https://simulatedgreg.gitbooks.io/electron-vue/content/index.html).
