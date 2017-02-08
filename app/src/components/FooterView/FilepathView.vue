@@ -10,6 +10,8 @@
     box-shadow: inset 1px 1px rgba(0,0,0,.1);
     flex-grow: 1;
     margin: 0 5px;
+    white-space: nowrap;
+    overflow: auto;
   }
   .filepath-text {
     -webkit-user-select: initial;
