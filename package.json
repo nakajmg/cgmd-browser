@@ -4,19 +4,13 @@
   "version": "0.0.0",
   "description": "realtime markdown preview for cgmd-preview",
   "scripts": {
-    "build": "node tasks/release.js",
-    "build:clean": "cross-env PLATFORM_TARGET=clean node tasks/release.js",
-    "build:darwin": "cross-env PLATFORM_TARGET=darwin node tasks/release.js",
-    "build:linux": "cross-env PLATFORM_TARGET=linux node tasks/release.js",
-    "build:mas": "cross-env PLATFORM_TARGET=mas node tasks/release.js",
-    "build:win32": "cross-env PLATFORM_TARGET=win32 node tasks/release.js",
     "dev": "node tasks/runner.js",
     "lint": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter app",
     "lint:fix": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter --fix app",
     "pack": "cross-env NODE_ENV=production webpack -p --progress --colors",
     "postinstall": "cd app && npm install",
     "vuex:module": "node tasks/vuex/module.js",
-    "build-manual": "rm -rf builds/cgmd-preview && npm run pack && electron-packager ./app cgmd-browser --out=builds --platform=darwin --arch=x64 --overwrite=true"
+    "build": "rm -rf builds/cgmd-preview && npm run pack && electron-packager ./app cgmd-browser --out=builds --platform=darwin --arch=x64 --overwrite=true"
   },
   "author": "nakajmg",
   "license": "MIT",
