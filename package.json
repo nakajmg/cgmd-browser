@@ -9,8 +9,7 @@
     "lint:fix": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter --fix app",
     "pack": "cross-env NODE_ENV=production webpack -p --progress --colors",
     "postinstall": "cd app && npm install",
-    "vuex:module": "node tasks/vuex/module.js",
-    "build": "rm -rf builds/cgmd-preview && npm run pack && electron-packager ./app cgmd-browser --out=builds --platform=darwin --arch=x64 --overwrite=true"
+    "build": "rm -rf builds/cgmd-browser-darwin-x64 && npm run pack && electron-packager ./app cgmd-browser --out=builds --platform=darwin --arch=x64 --overwrite=true"
   },
   "author": "nakajmg",
   "license": "MIT",
