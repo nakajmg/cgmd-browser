@@ -9,6 +9,7 @@ const wordCounter = require('./src/wordCounter')
 const watcher = {}
 const chokidar = require('chokidar')
 const axios = require('axios')
+const isURL = require('is-url')
 let mainWindow
 let config = {}
 const linter = require('./linter')
@@ -244,6 +245,10 @@ function createWindow () {
       const count = wordCounter(file)
       // ローカルの画像を読み込んでbase64で埋め込む
       const replacedFile = file.replace(/!\[([^\]]*?)\]\(([^)"'\s]+).*\)/g, (rep, $1, $2) => {
+        // URLであるなら処理をしない
+        if(isURL($2)){
+          return rep;
+        }
         let local = path.resolve(path.dirname(filepath), $2)
         try {
           let img = fs.readFileSync(local)
@@ -251,7 +256,7 @@ function createWindow () {
         }
         catch(err) {
           // ファイルが読み込めなかったらそのまま返す
-          return `![${$1}](./${$2})`
+          return `![${$1}](${$2})`
         }
       })
       // iframe の src を収集
