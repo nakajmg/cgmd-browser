@@ -9,6 +9,7 @@
     "chokidar": "^1.6.0",
     "codegrid-markdown": "^3.3.0",
     "fs": "0.0.1-security",
+    "is-url": "^1.2.2",
     "path": "^0.12.7",
     "request": "^2.75.0",
     "textlint": "^7.1.1",
